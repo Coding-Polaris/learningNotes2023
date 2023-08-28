@@ -1,0 +1,181 @@
+2. Chapter 2 - JavaScript for React
+
+JavaScript constantly updated by ECMA. Browser makers like Mozilla or Google meet the standard with each new update.
+
+var - make a variable. the old-school thing you know how to do
+
+const - the anti-variable. make a constant. immutable; unchangeable.
+
+    i. Let keyword
+        a. a sub-type of constant, but does something extra:
+        b. Lexical variable scope: If you precede an existing variable name with "let"
+        within any code block or if/else statement, that variable's value will
+        *not change outside of the block* if it was previously declared
+        c. Shorter, let *confines a constant value* to only that block for that constant name
+        d. Fun JS fact: for loop var declarations are *global*; any blocks declared reusing the value maintain that value
+        e. using let, however, binds the value to *the block and iteration in which it is used* (i === 1, i === 2, etc.)
+
+    ii. Template strings, aka string interpolation
+        a. Backticks. Syntax: `${let fizz = "i"} ${let buzz = "love"} ${let fizzbuzz = "monkeys"}` prints "i love monkeys"
+        b. any expression goes inside ${} and comes out as a toString of the eval value
+        c. Whitespace is now counted in modern JS, meaning tabs etc. can be used for readability
+
+    iii. Hoisting and function declaration
+        a. Declaring is like function blah() {stuff}
+        b. Expression is const/let/var blah = function() { stuff }
+        c. Declaring is "hoisted", global. You can use it before it's even defined (confusing to code maintainer?)
+        d. Expression function is the opposite, cannot be invoked (blah()) until after blah is defined
+
+    iv. Default values
+        a. Works like ruby. Do a let blah = function(arg1 = "default1", arg2 = "default2"), etc.
+        b. You can even set these to previously declared variables, not just strings
+
+    v. Arrow functions
+        a. long form: const aFunction = function(defaultValues = {}) { return "blah!" }
+        b. short form: const aFunction = (defaultValues = {}) => "blah"
+        c. don't need parens for single argument, do for zero or 2+ args
+        d. Using the keyword "this" within arrow functions ties "this" to the parent variable/function
+        e. Using it by itself foo => bar()
+
+    vi. Babel/compiling: Babel is a translator of newer JavaScript functions to simpler JavaScript that will work in older browsers
+        or allow new code to be used before it becomes part of the official/browser standard
+
+    vii. Destructuring
+        a. Pulls object attributes into variables or function calls
+        b. { var1, var2 } = objectName; console.log(var1, var2) // "objectName.var1" "objectName.var2"
+        c. Do this in function calls like funkyFunc = { var1 } => console.log(var1); funkyFunc(objectName) // var1 value
+        d. This can also go into sub-attributes if they exist funkyFunc = {firstField: {secondField}} => (console.log(secondField))
+        e. Arrays work similarly, but with [ ] as in let [ firstElementLetConst ] = [1, 2, 3] // firstElementLetConst === 1
+        f. Get the second or third element by plugging as many commas as there are preceding elements, like var [,secondElement] = [1,2,3] // secondElement === 2
+
+    viii. Literal enhancement
+        a. Can be thought of as reverse of destructuring
+        b. turn variable names into object keys
+        c. const { meep } = {var1, var2} // meep === {var1: var1Value, var2: var2Value}
+        d. Setting the keys to functions in this way sets the "this" value to the object,
+        so you can have meep.funkyFunc use this.var1 to return var1Value
+        e. functions added to object can simply be meep = {funkyFunc(): {logicGoesHere}}
+
+    ix. Spread operator "..."
+        a. pulls contents of array into list, a bit like ruby splat or flatten
+        b. var nums = [...[1,2,3], ...[4,5,6]] // nums === [1,2,3,4,5,6]
+        c. used with array deconstruction: var [one, two, ...threeThroughSix] // one === 1, two === 2, threeThroughSix === [3,4,5,6];
+        // node calls threeThroughSix the "rest element" because it partitions the remaining elements into the final named element
+        d. spread creates a copy of the array, so you can operate on it without changing the original array from which it was pulled
+
+    x. Asynchronous JS
+        a. Normally JS finishes each line before going to the next
+        b. Async allows work for some tasks to complete in the background
+        c. That's so fetch()
+            - Invoking creates a Promise object with three states:
+                - Pending
+                - Completed
+                - Failed
+            - Sounds a bit like jQuery ajax?
+            - .then() is a function that runs if .fetch succeeds, and runs whatever argument is passed into it.
+            - simply invoke with .fetch(someApiEndpoint).then(doStuffWith)
+            - see below. the res => res.json arrow function syntax isn't really explained,
+            but it looks like the function called in then() simply assumes the first argument is the
+            return value from fetch() (same goes for anytime you chain .then() onto another .then())
+
+            [js]
+                > fetch("https://api.randomuser.me")
+
+                Promise {
+                  <pending>,
+                  [Symbol(async_id_symbol)]: 2262,
+                  [Symbol(trigger_async_id_symbol)]: 6
+                }
+
+                > _ // previously returned object has changed after call
+
+                Promise {
+                  Response {
+                    [Symbol(realm)]: null,
+                    [Symbol(state)]: Proxy [ [Object], [Object] ],
+                    [Symbol(headers)]: HeadersList {
+                      cookies: null,
+                      [Symbol(headers map)]: [Map],
+                      [Symbol(headers map sorted)]: null
+                    }
+                  },
+                  [Symbol(async_id_symbol)]: 2262,
+                  [Symbol(trigger_async_id_symbol)]: 6
+                }
+
+                > _.then(res => res.json())
+
+                Promise {
+                  <pending>,
+                  [Symbol(async_id_symbol)]: 2546,
+                  [Symbol(trigger_async_id_symbol)]: 2262
+                }
+
+                > _
+
+                Promise {
+                  {
+                    results: [ [Object] ],
+                    info: { seed: 'a14295f092bcba24', results: 1, page: 1, version: '1.4' }
+                  },
+                  [Symbol(async_id_symbol)]: 2546,
+                  [Symbol(trigger_async_id_symbol)]: 2262
+                }
+            [end]
+
+        d. .catch(console.error) - Log error if fetch fails
+        e. Async/await
+            - Asynchronous function - Declare like this:
+            [js]
+                const getFakePerson = async () => {
+                    let res = await fetch(someURL); // shiny new keyword!
+                    let { results } = res.json();
+                    console.log(results);
+                };
+            [end]
+            - if you do this:
+            [js]
+                const getFakePerson = async() => {
+                    try {
+
+                    } catch(error) {
+                       console.error(error); 
+                    }
+                };
+            [end]
+            - you get basically the same code as the .fetch().then().catch() code in previous section.
+
+        f. Promises promises
+            - Consider the following:
+
+            [js]
+                const getPeople = (someUrl, count) => {// create a function accepting a url and count
+                    new Promise((resolve, reject) => { // which itself contains a function that accepts a Promise
+                        // these two args, callbacks, are JS default, and should be fired based on success or fail state
+                        // usually status 200, but can be something else
+                        const api = `${someUrl}${count}`; // target
+                        const request = new XMLHttpRequest();
+                        request.open("GET", api); // fire a get request to target
+                        request.onload = () => { // when the request is finished and returns a response, fire this logic
+                            request.status === 200
+                            // if request "resolves" or lands successfully, 
+                            ? resolve(JSON.parse(request.response).results) // fire resolve() using the json results of the request response, otherwise
+                            : reject(Error(request.statusText)); // fire reject() using the error status text
+                        };
+                        request.onerror = err => rejects(err);
+                        request.send();
+                    });
+                };
+            [end]
+
+            - Inline comments aside, this part of the book wasn't explained or written
+            terribly well, so I ended up going mostly with this instead:
+            https://blog.greenroots.info/javascript-promises-explain-like-i-am-five
+
+            - Remember the three possible states of fetch are also in promises: pending, fulfilled, or rejected
+
+            - Promise also has results: undefined (during pending), a value (fulfilled), or error (not sure of type? but obviously when rejected)
+
+            - Once a Promise is no longer pending, it is called "settled" whether or not the conclusion is fulfilled or rejected
+
+            - 

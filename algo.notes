@@ -1,0 +1,55 @@
+1. Binary Search
+    i. When searching for an entry start by checking middle
+    ii. If too low, check in middle of right side half, opposite if too high
+    iii. Rinse repeat until found
+    iv. Git Bisect is kind of a manual version of this
+    !! Only works in sorted lists !! 
+
+2. Logarithms refresher
+    i. Log base 2 of 8 is 3
+    ii. Log base 10 of 100 is 2 etc.
+
+Binary search code paraphrase:
+
+[ruby]
+# return index of desired_value in array
+# array must be sorted for logic to work
+def bi_search(sorted_array, desired_value)
+    mid_val = nil
+
+    low = 0
+    high = sorted_array.length - 1
+    puts "low: #{low}; high: #{high}"
+
+    mid_location = (high + low) / 2
+    until mid_location == 0
+        mid_val = sorted_array[mid_location]
+        puts "low: #{low}; high: #{high}; mid: #{mid_location}; value: #{mid_val}"
+        puts "searched_area: #{sorted_array[low..high]}"
+        if mid_val < desired_value
+            low = mid_location + 1
+            # high = high
+        elsif mid_val > desired_value
+            # low = low
+            high = mid_location - 1
+        else
+            return mid_location
+        end
+        mid_location = (high + low) / 2
+        puts "new low: #{low}; high: #{high}; mid: #{mid_location}"
+    end
+    return mid_location if (mid_val = sorted_array[mid_location]) == desired_value
+    nil
+end
+[end]
+
+Exercise Answers:
+
+1. "Suppose you have a sorted list of 128 names, and you're searching through it using binary search. What's the maxmimum number of steps it would take?"
+
+Worst-case scenario is the maximum number of divisions by two. So; 128 -> 64 -> 32 -> 16 -> 8 -> 4 -> 2 -> 1, or 7 divisions.
+
+2. "How many steps if you double the size of the list?"
+
+8 divisions; 8 steps.
+

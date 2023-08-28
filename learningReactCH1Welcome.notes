@@ -1,0 +1,21 @@
+1. Chapter 1 - Welcome to React
+
+npm - package manager/command-line package installation/publication client for node.js
+
+React - JS library. Involves webpack, preprocessing HTML-like markup within JS code.
+
+Been in use for over a decade by major names like Uber, Twitter, AirBnB
+
+Selling point is fast building similar to RoR
+
+    i. Created by a Facebook engineer in early 2010s
+    ii. Open source as of 2013, billed as the "View" in model-view-controller pattern
+    iii. Joined Netflix in 2015
+    iv. Same year, React Native, for mobile
+    v. Tools to look at later- React Router, Redux, Mobx
+    vi. React Fiber 2017 - Upgraded performance without changes to API
+
+    i. Dependencies
+        a. React Dev Tools Extension - open when on a page using React
+        b. Node.js
+        c. npm/yarn - version/package management
