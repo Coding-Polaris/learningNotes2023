@@ -1,5 +1,9 @@
 2. Chapter 2 - JavaScript for React
 
+Better resources than this chapter:
+
+https://frontend.turing.edu/lessons/module-3/promises.html
+
 JavaScript constantly updated by ECMA. Browser makers like Mozilla or Google meet the standard with each new update.
 
 var - make a variable. the old-school thing you know how to do
@@ -178,4 +182,9 @@ const - the anti-variable. make a constant. immutable; unchangeable.
 
             - Once a Promise is no longer pending, it is called "settled" whether or not the conclusion is fulfilled or rejected
 
-            - 
+            - Return to the above code. getPeople is a "consumer function"; it consumes the output of the Promise.
+
+            - The resolve or reject functions are "executor functions".
+
+    xi. Classes
+        - OG JS doesn't have classes

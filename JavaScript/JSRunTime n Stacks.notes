@@ -1,0 +1,52 @@
+# JSrunTimes - Adapted from "What the Heck is the Event Loop" by Philip Roberts w/ JSConf
+
+1. Overview
+
+    V8 - Google build of JavaScript?
+
+    Heap - Where memory is allocated
+
+    Stack - Last In First Out list of executing functions
+
+    V8 doesn't contain traditional JS methods like setTimeout.
+    Instead, that functionality is in what's called WebAPIs, provided by the browser.
+
+    The diagram in the presentation is a box denoting the browser/chrome containing JS
+    (in this case V8), made of heap and stack, calling WebAPI methods, passing info to
+    the callback queue.
+
+2. The Call Stack (one thread === one call stack === one thing at a time)
+
+    i. JavaScript is single-threaded; one code piece is run at a time.
+    ii. The call stack is a data structure that records where we are (hence "stack trace")
+    iii. Stack begins in main(), which scans for code to run.
+
+    iv. So, say we call a function printSquare(n), which invokes square(n) and which itself invokes multiply(n, n).
+    multiply() contains a completed return statement.
+
+    v. The stack now looks like
+
+        multiply(n, n)
+        square(n)
+        printSquare(n)
+        main()
+
+    vi. We now work backwards from the complete return statement, and pop stuff *off* the stack in the order of return.
+    vii. Hence, last-in-first-out; multiply() is done, pops off the stack, and passes n-squared to square(). And so on.
+    viii. Hence, stack traces are the stack printed backwards.
+
+    ix. Blowing up stack = infinite recursion
+
+    x. Blocking the stack - bottlenecks, poor performing or very slow/never returning synchronous code.
+
+    xi. How does async mess with the stack vs sync? say we have this:
+
+        [js]
+            (() => {
+                console.log('hi');
+
+                setTimeout(() => console.log('there')
+
+                console.log('JSConfEU')
+            })();
+        [end]
