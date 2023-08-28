@@ -1,0 +1,98 @@
+# Overarching review of OOPS
+
+Adapted from https://www.digitalocean.com/community/tutorials/oops-concepts-java-example
+
+1. Objects are instances of Classes; the actual "thing". Classes are like descriptions of Objects, "descriptions" of the "thing".
+
+2. Abstraction - Describing things simply, while keeping the details under the hood. Black boxing/syntactic sugar/libraries?
+
+	i. Data Abstraction
+
+		a. Allowing setters and getters for object attributes through methods only where there is an express need
+
+	ii. Process Abstraction
+
+		a. Determining which functions the user (or other classes) actually needs to see
+
+		b. Public methods, stuff like turning on a car or selecting a the gear
+
+		c. Private methods, stuff like sparking the fuel or engaging the transmission
+
+	iii. Besides not allowing whatever is using these methods outside the instance or class
+	to see their implementation details, we may also not be concerned with method details
+	when all we want is a result.
+
+	iv. For example, we may want to know how much fuel a car has left, but we don't need to
+	know the details of the systems the car uses to measure the fuel to get our result.
+
+3. Encapsulation - Private/public.
+What only the instance needs to know vs. outsiders accessing the instance or class methods
+
+4. Inheritance
+
+	i. Get methods from parent class to reuse in subclass
+
+	ii. However, subclass may have additional or different behavior
+
+	[java]
+		package com.journaldev.java.examples1;
+
+		class SuperClassA {
+
+			public void foo(){
+				System.out.println("SuperClassA");
+			}
+			
+		}
+
+		class SubClassB extends SuperClassA{
+				
+			public void bar(){
+				System.out.println("SubClassB");
+			}
+			
+		}
+
+		public class Test {
+			public static void main(String args[]){
+				SubClassB a = new SubClassB();
+				
+				a.foo();
+				a.bar();
+			}
+		}
+	[end]
+
+	iii. As seen, the subclass instance would have both SuperClassA.foo() and SubClassB.bar(),
+	but a superclass instance would only have foo()
+
+5. Polymorphism - Different behavior of an object in different situations
+
+	i. Compile time polymorphism
+
+		a. Achieved by method over*loading*
+
+			- Overloading; when you declare the same method multiple times, but with different arguments.
+
+		b. *Pile* a *load*
+
+	ii. Run time polymorphism
+
+		a. Method over*riding*
+
+		b. This is when the program must choose, at runtime, which in a hierarchy of methods is to be used
+
+		c. For instance - if we call .draw() on a Shape, are we using Square, Circle, or just Shape's method?
+
+		d. We don't know until runtime.
+
+		e. When inheriting and overriding a superclass method, which method is chosen (if it's overloaded in the parent class)
+		is determined 
+
+		e. *Run* or *ride*
+
+6. Association
+
+	i. Numerical description/relationship between discrete classes
+
+	ii. One-to-one, many-to-one (or inverse), many-to-many
