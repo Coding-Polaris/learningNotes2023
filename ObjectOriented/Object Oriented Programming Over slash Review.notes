@@ -18,6 +18,9 @@ Adapted from https://www.digitalocean.com/community/tutorials/oops-concepts-java
 
 		c. Private methods, stuff like sparking the fuel or engaging the transmission
 
+		d. Writer's thoughts: Allowing us to do things like make AJAX calls without
+		knowing what's happening under the hood. Fast development
+
 	iii. Besides not allowing whatever is using these methods outside the instance or class
 	to see their implementation details, we may also not be concerned with method details
 	when all we want is a result.

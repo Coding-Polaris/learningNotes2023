@@ -76,3 +76,6 @@ https://www.youtube.com/watch?v=8aGhZQkoFbQ
     xii. Interesting use case. With this logic, setTimeout(function, 0) will postpone its function til after stack is clear,
     even though it's waiting for "no time."
 
+    xiii. Asynchronous functions can keep long-running tasks from blocking the stack.
+    However, calling too many can cause them to block the Callback and Render queues.
+

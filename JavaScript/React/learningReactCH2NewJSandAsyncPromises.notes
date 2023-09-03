@@ -71,12 +71,12 @@ const - the anti-variable. make a constant. immutable; unchangeable.
         a. Normally JS finishes each line before going to the next
         b. Async allows work for some tasks to complete in the background
         c. That's so fetch()
-            - Invoking creates a Promise object with three states:
+            - Invoking creates (and returns) a Promise object with three states:
                 - Pending
                 - Completed
                 - Failed
             - Sounds a bit like jQuery ajax?
-            - .then() is a function that runs if .fetch succeeds, and runs whatever argument is passed into it.
+            - .then() is a function that runs if a promise succeeds, and runs whatever argument is passed into it.
             - simply invoke with .fetch(someApiEndpoint).then(doStuffWith)
             - see below. the res => res.json arrow function syntax isn't really explained,
             but it looks like the function called in then() simply assumes the first argument is the
@@ -107,7 +107,7 @@ const - the anti-variable. make a constant. immutable; unchangeable.
                   [Symbol(trigger_async_id_symbol)]: 6
                 }
 
-                > _.then(res => res.json())
+                > _.then(res => res.json()) // running .then() returns the Promise?
 
                 Promise {
                   <pending>,
@@ -131,9 +131,9 @@ const - the anti-variable. make a constant. immutable; unchangeable.
         e. Async/await
             - Asynchronous function - Declare like this:
             [js]
-                const getFakePerson = async () => {
-                    let res = await fetch(someURL); // shiny new keyword!
-                    let { results } = res.json();
+                const getFakePerson = async () => { // shiny new keyword async precedes args!
+                    let res = await fetch(someURL); // shiny new keyword away precedes a promise!
+                    let { results } = res.json(); // all this stuff doesn't execute until fetch promise fulfilled
                     console.log(results);
                 };
             [end]
@@ -187,4 +187,28 @@ const - the anti-variable. make a constant. immutable; unchangeable.
             - The resolve or reject functions are "executor functions".
 
     xi. Classes
-        - OG JS doesn't have classes
+        a. OG JS doesn't have classes
+        b. Originally, React used classes frequently to define behaviors
+        c. Trend seems to be changing recently (this 2nd edition book was published 2020)
+        going for functions instead of classes to define behavior
+        d. Refresher on prototypical inheritance
+            - Create a function with an uppercase name, with attributes if desired
+
+            [js]
+                // from fooling around in node looks like you have to use this syntax - must declare, not express
+                function Vacation(destination, length) {
+                    this.destination = destination;
+                    this.length = length;
+                };
+            [end]
+
+            - Give its prototype a method:
+
+            [js] Vacation.prototype.print = function() { console.log(`${this.destination} | ${this.length} days`) }; [end]
+
+            - And you can declare and use this like so:
+
+            [js]
+                const miami = new Vacation("Miami", 7);
+                miami.print(); // "Miami | 7"
+            [end]
