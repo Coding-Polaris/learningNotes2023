@@ -212,3 +212,83 @@ const - the anti-variable. make a constant. immutable; unchangeable.
                 const miami = new Vacation("Miami", 7);
                 miami.print(); // "Miami | 7"
             [end]
+
+        e. That's how the new Class syntax works under the hood.
+        The syntax (rewriting the previous code) looks like this:
+
+        [js]
+            class Vacation {
+                constructor(destination, length) { // new/initialize
+                    this.destination = destination;
+                    this.length = length;
+                }
+
+                print() {
+                    console.log(`${this.destination} | ${this.length} days`);
+                }
+            };
+
+            const miami = new Vacation("Miami", "14"); // new instance
+            miami.print(); // "Miami | 14 days"
+        [end]
+
+        f. Class inheritance works as you'd expect: subclass inherits behavior (methods/functions)/state (attributes) from superclass.
+
+        Example syntax:
+
+        [js]
+            class Expedition extends Vacation {
+                constructor(destination, length, gear) {
+                    super(destination, length);
+                    this.gear = gear;
+                }
+
+                print() {
+                    super.print();
+                    console.log(`Bring your ${this.gear.join(" and your ")}`);
+                }
+            };
+
+            const whitney = new Expedition("Mt. Whitney", 3, ["prayer flags", "ice shoes", "ropes"]);
+            whitney.print();
+
+            // Mt. Whitney | 3 days
+            // Bring your prayer flags and your ice shoes and your ropes
+        [end]
+
+        g. As you can see, super as is tradition calls the parent class method of the same name - works for constructor
+        
+        h. Providing the same name method in the subclass overrides the method inherited from the superclass
+
+    xii. ES6 Modules
+
+        This chapter isn't explained terribly well, so these SO answers are helpful:
+
+        https://stackoverflow.com/questions/33611812/export-const-vs-export-default-in-es6
+
+        https://stackoverflow.com/questions/46913851/why-and-when-to-use-default-export-over-named-exports-in-es6-modules
+
+        a. export: a keyword that can be used to bring data (of any type, like functions, vars, consts, or classes) from one js file into another
+
+        b. doing so preceding a variable's name is called a "named export", and can be used an infinite number of times per file
+
+        c. default: used with export like "export default <dataToExport>". can only be used *once* per file
+
+        d. import: roll the requested named export into the current file's scope. can be used many ways:
+
+        [js]
+            // imports foo and bar into the current scope
+            // they will behave like the definitions in foobar.js
+            import {foo, bar} from "./foobar.js"
+
+            // what if we want these to have different names in the current scope?
+            import {foo as bax, bar as qux} from "./foobar.js"
+
+            // if we did a export default const quux in foobar.js,
+            // that single exported data is rolled into one variable
+            import blah from "./foobar.js"
+
+            // import all declarations into a single object
+
+            import * as fooBarBaz
+        [end]

@@ -1,0 +1,288 @@
+Chapter 3 - Functional Programming with JavaScript
+
+1. Functions are said to be first-class citizens. That just means they can behave/be treated like variables
+
+2. Adding to object as though it's a variable:
+
+    [js]
+        var obj = {
+            message: "log is both a variable and a function of obj!",
+            log(message) { // from what i remember, you used to have to do something like log: function() {}
+                console.log(message);
+            }
+        };
+
+        obj.log(obj.message); // log is both a variable and a function of obj!
+    [end]
+
+3. Most of the next section is just chaining function calls:
+    i. Iterating through lists/arrays of them.
+    ii. Using functions as arguments of other functions.
+    iii. Returning functions from functions.
+    iv. Using a returned function as an argument in another function.
+
+4. Functions that take functions as arguments, or that return functions, are "higher-order" functions. You can
+use the usual argument pass-ins or return nesting, but an interesting shorthand is
+
+    [js]
+        var createScream = logger => message => logger(message.toUpperCase() + "!!!");
+
+        var scream = createScream(message => console.log(message));
+        scream("blah");
+        // BLAH!!!
+    [end]
+
+    i. createScream is a function that accepts another function, named logger
+    ii. the return value of createScream is a function that accepts a message and
+    passes it to logger
+    iii.  logger executes the logic in the function call when invoked
+    iv. so, passing a function in that accepts a message and console.logs(message)
+    means we console.log A FULLY UPPERCASED MESSAGE!!!
+
+5. Imperative vs Declarative
+
+    i. Functional programming is part of the bigger picture called "declarative programming"
+    ii. Declarative focuses on describing "what" to do rather than "how" to do it
+    iii. Imperative programming is about focusing mainly on the result
+    iv. Imperative example:
+
+    [js]
+        const hanalei = "Restaurants in Hanalei";
+        var urlFriendly = "";
+
+        for (let i = 0; i < hanalei.length; i++) {
+            if(hanalei[i] === " ") {
+                urlFriendly += "-";
+            } else {
+                urlFriendly += hanalei[i];
+            }
+        }
+
+        console.log(urlFriendly); // Restaurants-in-Hanalei
+    [end]
+
+    Not expressive.
+
+    v. Declarative example:
+
+    [js]
+        const hanalei = "Restaurants in Hanalei";
+        var urlFriendly = hanalei.replace(/ /g, "-");
+
+        console.log(urlFriendly);
+    [end]
+
+    Same thing, but a lot more readable -- details of how this process happens are
+    "abstracted" or hidden from the view of the person borrowing this shorthand, since
+    the details are not necessary to understanding the result here.
+
+    vi. Chain or list a lot of short, highly descriptive/readable almost-pseudocode-named methods
+    to accomplish tasks
+
+    vii. Book provides examples of imperative vs declarative dom construction w/ JS:
+
+    [js]
+        const target = document.getElementById("target");
+        const wrapper = document.createElement("div");
+        const headline = document.createElement("h1");
+
+        wrapper.id = "welcome";
+        headline.innerText = "Hello World";
+
+        wrapper.appendChild(headline);
+        target.appendChild(wrapper);
+    [end]
+
+    Super old school. Compare with React example:
+
+    [js]
+        const { render } = ReactDOM; // unexplained, but enables render()
+
+        const Welcome = () => ( // create a reusable chonk with this content
+            <div id="welcome">
+                <h1>Hello World</h1>
+            </div>
+        );
+
+        render(<Welcome />, document.getElementById("target")); // stick the chonk inside Welcome into < /> of the first element with id "target"
+    [end]
+
+    Kind of an odd example if you don't already know how react works; not terribly readable.
+
+6. Functional concepts
+
+    i. Immutability: We don't change any data in functional programs, which explains why the authors love "const" so much.
+
+    ii. Instead, we make modified copies of existing data rather than changing stuff in place (memory-expensive?)
+
+    iii. Similar to how new info arises in DNA.
+
+    iv. Example of muting vs not:
+
+    [js]
+        var objWithColorAndOtherThing = {
+            thing1: "stuff",
+            color: "red",
+            thing2: "bricabrac"
+        };
+
+        function changeObjColorInPlace(obj, color) { // mutes
+            obj.color = color;
+            return obj;
+        };
+
+        const changeObjColorReturnCopy = (obj, color) => { // treats objWithColor as immutable
+            let tempObj = Object.assign({}, obj, {color: color});
+            return tempObj;
+        };
+
+        console.log(objWithColorAndOtherThing); // {color: 'red'}
+        console.log(changeObjColorInPlace(objWithColorAndOtherThing, "green")) // {color: 'green'}
+        console.log(objWithColorAndOtherThing); // {color: 'green'}
+        const newObj = changeObjColorReturnCopy(objWithColorAndOtherThing, "blue"); // {color: 'blue'}
+        console.log(newObj); // {color: 'blue'}
+        console.log(objWithColorAndOtherThing); // {color: 'green'}
+    [end]
+
+    Shorthand:
+
+    [js]
+        const newColorObj = (obj, color) => ({ ...obj, color: color });
+        console.log(newColorObj(objWithColorAndOtherThing, "pink"));
+    [end]
+
+    v. When returning an object from an arrow function, surround the braces with parentheses (see above)
+
+    vi. Array.push mutes, Array.concat does not. Spread operator can be used like concat:
+
+    [js] const AddColor = (title, list) => [...list, { title }]; [end]
+
+7. Pure Functions
+
+    i. Always take at least one argument
+
+    ii. Always return a value or another function
+
+    iii. Does not cause "side effects", that is, change variables outside of what is passed in (or anything else, but we're getting to that)
+
+    iv. Pure functions only need to be configured with their arguments,
+    do not require any outside data to be set up to function
+
+    v. This makes them more testable than impure functions that require
+    global or within-scope variables to be set specifically for them
+
+    vi. Example
+
+    [js]
+        const frederick = {
+            canRead: false,
+            canWrite: false,
+            name: "Frederick Douglass"
+        };
+
+        const selfEducate = person => ({ // takes arg person, returns new, separate object
+            ...person,
+            canRead: true,
+            canWrite: true
+        });
+
+        console.log(selfEducate(frederick)); // {canRead: true, canWrite: true, name: "Frederick Douglass"} -- modified copy
+        console.log(frederick); // {canRead: false, canWrite: false, name: "Frederick Douglass"} -- unmuted
+    [end]
+
+    vii. This ties in to React in that React does not change things, just sort of creates new things based on arguments.
+    In this way, everything in React is a *pure function*.
+
+    [text] const Header = props => <h1>{props.title}</h1>; [end]
+
+    viii. Basic rules of functional programming:
+        a. Take at least one argument.
+        b. Return a value or other function.
+        c. Nothing passed in should be modified
+
+8. Data Transformations
+
+    i. "Functional programs" don't modify existing data. Instead, they use pure functions to return copies changed from the original
+
+    ii. The most important functions to know are Array.map and Array.reduce
+
+    iii. Array.join as it turns out is functional; creates a string from a join that doesn't affect the original array
+
+    iv. Array.filter takes a "predicate", or function that always returns a boolean value
+
+    v. Contrast functional methods with things like pop or splice, which mute variables
+
+    vi. Array.map refresher
+
+        a. Takes a function and performs that function on each member of the array
+
+        b. Sticks the return value in a new array at the same index as the original array
+
+        c. Hence, "map" - appears to replace all the elements with the function passed in
+
+        d. But the array is not edited in place - it returns a copy
+
+    vii. Remember Object.keys is like Hash.keys
+
+    viii. Array.reduce method
+
+        a. Takes two arguments, a function and a value to be modified
+
+        b. Iterates over entire array. The value to be modified is usually compared to each element of the array, and modified with each iteration
+
+        c. ReduceRight is exactly the same, but starts from the right side of the array instead of the left
+
+        d. The "reduce" is taking the list and "reducing" it to a single value.
+
+        e. Syntax: [js] [el1, el2, el3].reduce((reducedTo, arrayElement) => someLogic, 0); [end]
+
+        f. arrayElement can be used with Object deconstruction to pull keys from Objects in an Array
+
+        g. that is,
+
+            [js] const arr = [{a: b, c:d, e:f}, {see: previous}]; [end]
+
+            could be reduced with
+
+            [js]
+                arr.reduce((hash, {a, b, c}) => hash[c] = {a, e}); //
+            [end]
+
+        h. How would we implement .unique?
+
+            [js]
+                const array = [1, 1, 2, 3, 5, 8];
+
+                array.reduce(
+                    (uniqueArray, number) =>
+                        uniqueArray.indexOf(number) === -1
+                            ? [...uniqueArray, number]
+                            : uniqueArray,
+                    []);
+
+                // => [1, 2, 3, 5, 8]
+            [end]
+
+9. Higher-Order Functions
+
+    i. Functions that process other functions, e.g. by taking them as arguments or returning new functions
+
+    ii. Array .map, .reduce, and .filter are all examples that take a function as argument
+
+    iii. Example:
+
+    [js]
+        const invokeIf = (condition, fnTrue, fnFalse) =>
+            condition ? fnTrue() : fnFalse();
+
+        const showWelcome = () => console.log("Welcome");
+
+        const showUnauthorized = () => console.log("Unauthorized!!!");
+
+        invokeIf(true, showWelcome, showUnauthorized); // Welcome
+        invokeIf(false, showWelcome, showUnauthorized); // Unauthorized!!!
+    [end]
+
+    iv. Currying
+
+        [js]
