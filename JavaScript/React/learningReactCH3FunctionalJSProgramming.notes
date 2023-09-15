@@ -95,7 +95,7 @@ use the usual argument pass-ins or return nesting, but an interesting shorthand 
 
     Super old school. Compare with React example:
 
-    [js]
+    [html]
         const { render } = ReactDOM; // unexplained, but enables render()
 
         const Welcome = () => ( // create a reusable chonk with this content
@@ -148,7 +148,7 @@ use the usual argument pass-ins or return nesting, but an interesting shorthand 
 
     [js]
         const newColorObj = (obj, color) => ({ ...obj, color: color });
-        console.log(newColorObj(objWithColorAndOtherThing, "pink"));
+        console.log(newColorObj(objWithColorAndOtherThing, "pink")); // {color: 'pink'}
     [end]
 
     v. When returning an object from an arrow function, surround the braces with parentheses (see above)
@@ -285,4 +285,238 @@ use the usual argument pass-ins or return nesting, but an interesting shorthand 
 
     iv. Currying
 
+        // using these because the text is bad here
+
+        https://medium.com/dailyjs/why-the-fudge-should-i-use-currying-84e4000c8743
+        https://builtin.com/software-engineering-perspectives/currying-javascript 
+
+        a. Functions that return functions. Basically makes a Russian Doll of functions.
+
+        b. Return arguments at each level of the function call (think of using argument to pry open doll)
+
+        c. These returned functions are useful when they are used to process
+        asynchronously changed data
+
+        d. Example from Medium:
+
+        [js] const curried = arg1 => arg2 => arg3 => { ... }; [end]
+
+        e. Curried functions are called "partial applications" until every required argument is passed.
+
+        f. It's done/complete/fulfilled when each member is invoked with its required argument.
+
+        g. Remember scope: Each inner function has access to the data of the above function
+
+        h. But how do you use it?
+
+            - DRYing code - If a part of the function remains the same,
+            make only the part that's different in each use case the
+            argument of the remaining parts.
+
+            Example from Medium of non-DRY vs DRY curried:
+
+            [js]
+                const createURL = (baseURL, path) => {
+                    const protocol = "https";
+                    return `${protocol}://${baseURL}/${path}`;
+                };
+
+                // create URLs for our main site
+                const homeURL = createURL("mysite.com", "");
+                const loginURL = createURL("mysite.com", "login");
+                const productsURL = createURL("mysite.com", "products");
+                const contactURL = createURL("mysite.com", "contact-us");
+
+                // create URLs for our careers site
+                const careersHomeURL = createURL("mysite-careers.com", "");
+                const careersLoginURL = createURL("mysite-careers.com", "login");
+            [end]
+
+            Adapted from the DRY curried example:
+
+            [js]
+                const createURL = (baseURL) => (path) => {
+                    const protocol = "https";
+                    return `${protocol}://${baseURL}/${path}`;
+                };
+
+                const createMySiteURL = createURL("mysite.com");
+                // function(path) { return `https://mysite.com/${path}` };
+                const createCareersURL = createURL("mysite-careers.com");
+                // function(path) { return `https://mysite-careers.com/${path}` };
+                
+                // this part is my style of DRYing:
+                const mySitePaths = [
+                    "login",
+                    "products",
+                    "contact-us"
+                ];
+
+                const mySiteURLs = mySitePaths.reduce(
+                    (hash, path) => {
+                        console.log(hash, path);
+                        hash[path] = createMySiteURL(path);
+                        return hash;
+                    }, {}
+                );
+
+                console.log(mySiteURLs);
+                // {
+                //     login: 'https://mysite.com/login',
+                //     products: 'https://mysite.com/products',
+                //     'contact-us': 'https://mysite.com/contact-us'
+                // }
+            [end]
+
+    v. Recursion
+
+        a. Have a function call itself within its own scope
+
+        b. Example:
+
         [js]
+            const factorial = (integer) => integer > 1 ? integer * factorial(integer - 1) : integer;
+
+            factorial(5); // 120
+            factorial(4); // 24
+            factorial(3); // 6
+        [end]
+
+        c. Book example:
+
+        [js]
+            const countdown = (value, fn, delay = 1000) => {
+                fn(value);
+                setTimeout(delay);
+                return value > 0 ? countdown(value - 1, fn) : value;
+            };
+
+            countdown(10, value => console.log(value));
+        [end]
+
+        d. Can be used instead of loops
+
+        e. Use cases might be for checking Promise readiness/await conditions for async, or recurrent timeouts
+
+        f. Can be the root of breadth-first or depth-first search
+
+        g. Book example (paraphrased):
+
+        [js]
+            const deepPick = (fields, object = {}) => {
+                const [first, ...remaining] = fields.split(".");
+                return remaining.length
+                    ? deepPick(remaining.join("."), object[first])
+                    : object[first];
+            };
+
+            const dan = {
+                type: "person",
+                data: {
+                    gender: "male",
+                    info: {
+                        id: 22,
+                        fullname: {
+                            first: "Dan",
+                            last: "Deacon"
+                        }
+                    }
+                }
+            };
+
+            deepPick("type", dan); // "person"
+            deepPick("data.info.fullname.first", dan); // "Dan"
+            deepPick("address", dan); //undefined
+        [end]
+
+        h. How does it work?
+
+            - At each level of stack, create array w/ each element of string split by periods
+
+            - More fields? rerun the function within itself but 1. without the first element and 2. passing in the object value at object[first]
+
+            - No more fields? return the value at the current iteration's object[first]
+
+            - So deepPick("data.info.fullname.first", dan) does dan[data] => {gender, info}; {gender, info}[info] => {id, fullname}, etc.
+
+10. Composition
+
+    I prefer this article on .pipe() and .compose() to explain this concept; the book gets unnecessarily complicated.
+
+    https://medium.com/free-code-camp/pipe-and-compose-in-javascript-5b04004ac937
+
+    i. Functional programs use a lot of atomic functions
+
+    ii. The overall app is created by these working in concert/tandem
+
+    iii. See the article - If we need to chain a bunch of function calls, it gets messier and messier with nesting
+
+    iv. The article lists a bunch of nested functions working on return values in sequence.
+
+    v. It asks - How about we just use .pipe()?
+
+    [js]
+        pipe(
+          getName, // "Buckethead"
+          uppercase, // "BUCKETHEAD"
+          get6Characters, // "BUCKET"
+          reverse  // "TEKCUB"
+        )({ name: 'Buckethead' }); // "TEKCUB"
+    [end]
+
+    How does it work? This is a one liner, but let's blow it up a bit:
+
+    [js]
+        const pipe = (...fns) => // a function that accepts a list of functions, expressed here as rest parameters, possibly empty
+            x => fns.reduce( // pass arg x into reduce, using it as the accumulator
+                    (v, f) => f(v), // each function, now called f, is called on v
+                    // v starts the list of functions as v === x,
+                    // and is passed back up the stack after run through all functions in reduce.
+                x);
+
+        // therefore, this is invoked with pipe(list of functions)(some value to run thru list of functions)
+    [end]
+
+    vi. .compose() is the same thing, but in reverse:
+
+    [js]
+        compose(
+          uppercase, // "DAEHTE"
+          get6Characters, // "daehte"
+          reverse,  //  this returns "daehtekcuB"
+          getName // "Buckethead". Move up from here. we had to move getName to here -- or this compose won't work!
+        )({ name: 'Buckethead' }); // "DAEHTE"
+
+        // to get the same result as the pipe function, it's simply full reversal
+
+        compose(
+          reverse, // "TEKCUB"
+          get6Characters, // "BUCKET"
+          uppercase,  // "BUCKETHEAD"
+          getName // "Buckethead"
+        )({ name: 'Buckethead' }); // "TEKCUB"
+    [end]
+
+    And the implementation is the same as pipe, just with .reduceRight instead of .reduce to get the backwards order.
+
+    [js]
+        const compose = (...fns) => x => fns.reduceRight((f, v) => f(v), x);
+    [end]
+
+    vii. Verbose old-JS rewrite of .pipe():
+
+    [js]
+        function pipe(...funcyList) { // pass pipe a list of functions...
+            return function(x) { // which returns a function that accepts x...
+                return funcyList.reduce(function(funcFromList, v) { // which returns the results of running reduce on a list of functions performed sequentially on x
+                    return funcFromList(v); // where v is the value of x once changes are added at each step of the list; so the reduce ultimately returns the final value of v
+                }, x); // notice that reduce is INVOKED here with x, so we only need two calls to fully invoke .pipe().
+            } 
+        };
+    [end]
+
+    viii. Book recommends using functions to pass values whereever possible -- including functions for passing unchanging, fixed values?!
+
+    ix. Interestingly, the book also has .compose as being in the opposite direction as stated in the article, that is, in the same direction as .pipe.
+
+    x. Other sources seem to agree the article is correct. This book sucks?!

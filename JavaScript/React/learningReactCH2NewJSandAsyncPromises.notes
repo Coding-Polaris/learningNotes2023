@@ -132,7 +132,7 @@ const - the anti-variable. make a constant. immutable; unchangeable.
             - Asynchronous function - Declare like this:
             [js]
                 const getFakePerson = async () => { // shiny new keyword async precedes args!
-                    let res = await fetch(someURL); // shiny new keyword away precedes a promise!
+                    let res = await fetch(someURL); // shiny new keyword await precedes a promise!
                     let { results } = res.json(); // all this stuff doesn't execute until fetch promise fulfilled
                     console.log(results);
                 };
@@ -154,9 +154,9 @@ const - the anti-variable. make a constant. immutable; unchangeable.
 
             [js]
                 const getPeople = (someUrl, count) => {// create a function accepting a url and count
-                    new Promise((resolve, reject) => { // which itself contains a function that accepts a Promise
-                        // these two args, callbacks, are JS default, and should be fired based on success or fail state
-                        // usually status 200, but can be something else
+                    new Promise((resolve, reject) => { // which returns a Promise, which accepts a function that itself accepts two functions
+                        // these two args are callbacks. they are JS default, and should be fired based on success or fail state
+                        // usually status 200 is success, but can be something else
                         const api = `${someUrl}${count}`; // target
                         const request = new XMLHttpRequest();
                         request.open("GET", api); // fire a get request to target
@@ -196,6 +196,7 @@ const - the anti-variable. make a constant. immutable; unchangeable.
 
             [js]
                 // from fooling around in node looks like you have to use this syntax - must declare, not express
+                // as a reminder, that's function X() => (...), not const X() => (...) 
                 function Vacation(destination, length) {
                     this.destination = destination;
                     this.length = length;
