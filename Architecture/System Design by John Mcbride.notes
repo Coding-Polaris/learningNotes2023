@@ -1,0 +1,205 @@
+Based on
+
+"System design interview: Scale to 1 million users" by John McBride
+
+Uploaded July  2021
+
+https://www.youtube.com/watch?v=YkGHxOg9d3M
+
+Note-taker's thoughts are labeled "NT"
+
+This appears to be a good 50,000 ft point of view
+
+Follow up with videos on specific types of technology stacks
+
+and recent tech interviews
+
+1. System design questions are some of the hardest questions!
+
+2. System design - The practice + methodology of turning
+disparate pieces of software into a usable system. A form of engineering
+
+3. Strategy
+
+  i. Begin from very *high level*: Do not use particulars like coding or algorithms used;
+  don't go into the details like type of DB used or organization of it, don't dwell on implementation
+  (NT: looking back, true only unless asked)
+
+    a. What is a *general picture of the system parts*? You don't have to describe the parts in great detail.
+
+  ii. Always be ready to pivot
+
+    a. Interviewer will ask you how you have/how you will pivot -
+    But also ask them: What stack in the future?
+
+    b. Be comfortable with changing technologies
+
+    c. Why did you use that technology? What if we want to use a different technology?
+
+    d. NT: How do you know what you don't know?
+
+  iii. Conversation
+
+    a. Rubber duck, or explain your thoughts as you progress through your vision
+
+    b. Touch on/consider aloud things like performance, scalabiity, future proofing
+
+4. Tradeoffs
+
+  i. Why this technology and not that one?
+
+  ii. *Scalabiity* is particularly important when considering different technologies
+
+5. Tech knowledge
+
+  i. Try to know the details even if you're not discussing all of them
+
+  ii. Or at least a high level of how these work so that you can discuss tradeoffs
+
+6. Practice
+
+  i. Use a whiteboard, do mock interviews, etc.
+
+7. How would you scale a basic app to a million users?
+
+  i. Suppose you have a self-hosted server connected to the Internet or a cloud server, etc.
+
+  ii. Just a box accessible from the internet
+
+  iii. Request goes from mobile or desktop to DNS
+
+  iv. DNS returns IP to user
+
+  v. Request goes to server via IP and response comes back to user
+
+  vi. Now add a DB. Store user state to avoid losing user data
+
+    a. Types: NoSQL, relational, etc.
+
+  vii. Choose based on asking the interviewer the requirements
+
+  viii. How are you modeling state and behavior of users and DB objects?
+
+  ix. How is this state and behavior communicated between server and user?
+
+  x. Usually some form of JSON from a REST or GraphQL API
+
+  xi. Note-taker's note: Can be worked into components loaded from a front-end app, or pulled in async
+
+  xii. What if instead we just want media?
+
+  xiii. Still a request, but instead pass request to CDN to
+  fill content in the page/app or use a socket to stream
+  locally stored video
+
+  xiv. Video author's opinion is that getting even into API details
+  and JSON requests might be too detailed
+
+  xv. This is the base web app. Now what? How do we start the scaling?
+
+    a. Physically separate DB activity from web server. DB talks to server and vice-versa.
+    Data isn't hosted on request/response server, just routed through it.
+
+      - Note-taker's questions:
+
+        - How do I implement this?
+
+        - How does this communication work?
+
+        - How does latency within the previously-monolithic
+        system compare with having a new dedicated DB server?
+
+    b. Vertical scaling: Increase memory, CPU power, storage of DBs or web server.
+
+      - Cheap and effective/efficient
+      
+      - Note-taker's note: Single point of failure?
+
+    c. Horizontal scaling: More machines and server instances that have to talk to each other
+
+      - Requires load balancing
+
+      - May require new ways of communication and handling conflicts/race conditions
+
+    d. How do we scale DBs to multiple machines?
+
+      - What are the implementation details and pitfalls?
+
+    e. Add a discrete load-balancer server
+
+      - User <---> Server <---> Load-balancer <---> Multi DB
+
+      - Note-taker's questions: What tech do we use at each step? How do we learn about it?
+
+      - John purportedly answers this here: https://www.youtube.com/watch?v=qjsuOUXxD64
+
+      - This can, and possibly should, be done for both DB servers AND for web request servers
+
+        - Easier geographical service to have multiple physical servers across the globe
+
+      - John does not see any real disadvantages to load balancing
+
+      - Implies this is something that is done in pretty much every at-scale app
+
+      - This can also be done for web servers themselves: Multiply them and add load balancer for web traffic
+
+      - User <---> Load-balancer <---> Server!s
+
+    f. Taking the burden off of the server and putting it on client processing/storage
+
+      - Careful to balance with UX
+
+    g. Or, put different types of state and behavior in their own server
+
+      - Video author puts user data/state in their own dedicated server
+
+      - Also touches on the fact that Kubernetes does this
+
+      - Dedicated auth/user session server
+
+      - To research: Stateless sessions/users?
+
+      - NT: The pattern is taking discrete, strenuous activities and abstracting them into individual containers
+    (Similar to functional programming?)
+
+    h. In the spirit of dedicated-purpose machines, John touches on CDNs for media and common assets
+
+      - Have an outside cloud server with tons of speed and built-in scalability take over all this delivery
+
+      - Another video for CDNs here
+
+    i. Consider costs at every step
+
+    j. Consider redundancy and what to do in cases of failure at each point of the system
+
+    k. Note-taker's thoughts. In sum:
+
+      - Discuss 5 keystones of each component:
+        - Resources used
+        - Advantages + disadvantages of one vs another approach
+        - Cost
+        - Potential points of failure and safeguards (redundancy)
+        - Sustainability
+      - Once established, how is it scaled?
+      - When we many any step at all -- scaling, implementation, etc., how do we deal with the five keystones again?
+
+    l. The concept of horizontal scaling can be extended to entire technology stacks, hardware + software
+
+    m. So that means multiple data centers etc. and these themselves can have load-balancers
+
+    n. Grafana Prometheus - Have a server that gives you metrics, or performance/request numbers/graphs to know
+    how to proceed or correction
+
+    o. Because of all this decoupling, we need to correct for data drift.
+
+      - This is another read/write layer, a dedicated data center that handles data consistency and auth balancing
+
+    p. What else?
+
+      - Caching layer for data
+
+      - Messaging system like Rabid
+
+      - Going serverless (cloud stuff?)
+
+    q. Tech stacks for actual implementation of all this - broad overview video?

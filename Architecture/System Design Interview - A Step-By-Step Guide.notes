@@ -1,0 +1,127 @@
+Based on
+
+"System Design Interview: A Step-By-Step Guide" by ByteByteGo
+
+Uploaded February 2023
+
+https://www.youtube.com/watch?v=i7twT3x5yv8
+
+1. Recommends an interview framework to avoid spending time without
+conveying thought process/knowledge/suitability/value
+
+2. 4-step framework. Timing rough guideline
+
+	i. Understand problem and make design scope - 5 minutes
+
+		a. System design questions are often open-ended and deliberately vague
+
+		b. Tests how the candidate organizes thoughts and gathers information
+
+		c. Don't try to build a solution before you understand the problem!
+
+			-. Why are we building this?
+
+			-. Who is it for and how many users?
+
+			-. What features will it need?
+
+		d. Example: Different chat apps have different scales, use cases, features, etc.
+
+		e. Understand the features and to outline them in most to least important
+
+		f. Get clear agreement from interviewer on scope of features
+
+		g. Ask questions about the non-functional requirements.
+
+		h. Author recommends focusing these questions and the approach on scale + performance
+
+			- other examples availability, uniqueness, freshness
+
+			- get a rough estimate of how many users we're building for
+
+	ii. Propose high-level design and get buy-in - 20 minutes
+
+		a. Develop a high-level design that the interviewer agrees with
+
+		b. Author recommends top-down approach, beginning with the app's RESTful APIs
+
+		c. Routes and request types mapped to fulfilling requirements and CRUD verbs as necessary
+
+		d. Define the input parameters and output responses carefully
+
+		e. No fluff - Don't introduce features that haven't been discussed or requested
+
+		f. Websockets are a pretty common requirement for two-way communication
+
+		g. However, these are stateful and thus difficult to operate at scale
+
+			- Stateless - Each new operation is agnostic of previous states
+
+			- Stateful - Requests dependent upon previous state, so always made to same server
+
+			- Context and history stored on server
+
+		h. If this needs to be scaled, discuss in phase 3
+
+		i. Diagram your system, including necessary communication middlemen,
+		and ensure that it satisfies all requirements
+
+		j. Start from user w/ requirement and move through nodes
+
+			- DNS, IP -> Load Balancer -> Service/Server -> DB for persistent data
+			(or multiple dbs/machines, see Mcbride's "system design" vid)
+
+			- The blueprint in the vid recommends the user writes to primary DB
+
+			- This DB sends replicated data to other backup/geospatially closer DBs
+
+			- It is from these that the user requests data for reading
+
+			- So user -> userData
+				-> LB
+				-> dataProcessor
+				-> primaryStorage
+				-> replicateToReadDataBases
+				-> readDataBase
+				-> user
+				but in more of a web/flowchart-like format
+
+			- At this stage of the interview, you do not need to discuss tech stacks
+
+			- For future reference tho, listed in the video:
+
+				- elasticsearch
+				- MySQL
+				- PostgreSQL
+				- SQLite
+				- Oracle
+				- IBM DB2
+				- MS Access
+				- MSSQL
+				- mongoDB
+				- cassandra
+				- MariaDB
+				- redis
+				- snowflake
+
+			- Should only be chosen after a schema is agreed upon
+
+			- What follows is an approximation of how something like Google Maps might work
+
+			- Don't just draw the diagram; step through each of the requirement fulfillment processes
+
+			- EZ example for Google Maps
+
+				- User asks Google where they are
+
+				- Gets location response, asks CDN for appropriate location image rendered w/ client
+
+				- Location used to calculate next direction, also sent to client, which renders directions
+
+			- Use a lot of high level black boxes at this stage, don't get into the super detailed diagrams
+
+	iii. Design deep dive - 15 minutes
+
+
+
+	iv. Wrap-up - 5 minutes
