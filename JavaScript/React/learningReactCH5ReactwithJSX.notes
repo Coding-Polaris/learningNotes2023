@@ -1,0 +1,132 @@
+Chapter 5 - React with JSX
+
+1. Intro
+
+    i. JSX = JavaScript + XML
+
+    ii. JS extension that allows XML-type elements directly in JS code
+
+2. React Elements as JSX
+
+    i. Element type specified with tag (<IngredientsList> in last chapter)
+
+    ii. Attributes = element's properties
+
+    iii. Children go between opening and closing tags
+
+    iv. JSX looks much like HTML/XML, just that you can stick components in it too
+
+    Non-JSX React:
+
+    [js]
+        // Create IngredientsList from defined component. listOfIngredients = some array of components
+        React.createElement(IngredientsList, {list: listOfIngredients});
+    [end]
+
+    [xml] <!-- Just pretend this says jsx for syntax highlighting's sake -->
+        <IngredientsList list={listOfIngredients}></IngredientsList>
+    [/xml]
+
+    v. Properties can be either JS expressions (any code statement that returns a value) or strings
+
+    vi. As seen above, you can pass JavaScript expressions to JSX properties (list=etc...) by surrounding them with {}
+
+3. JSX Tips
+
+    i. Nest components - Components may be children of other components
+
+    ii. className - remember that class is reserved in JS; to have a HTML/CSS class, you must use className=
+
+    iii. JavaScript expressions + evaluation
+
+        a. Pretty much string interpolation.
+
+        b. Anywhere you put { someJavaScriptCode(); } the return value of the expression goes into the JSX there
+
+4. Mapping Arrays with JSX
+
+    You can put JSX directly inside JS functions to build more JSX:
+
+    [xml]
+        {props.ingredients.map((ingredient, i) => (
+            <li key="{i}">{ingredient}</li>
+        ))}
+    [end]
+
+5. Babel - https://babeljs.io/
+
+    i. A compiler that allows React and JSX to function in older browsers
+
+    ii. Converts JSX to pure JavaScript
+
+    iii. Wrap JSX in legacy windows with <script type="text/babel"></script>
+
+    iv. Precompiling only necessary for production Babel
+
+6. Recipes as JSX
+
+    i. JSX can't be directly read by browsers; it's converted to JS first
+
+    ii. Begin long example right... now
+
+    iii. Suppose we have a `data` array containing two recipes
+
+    iv. Each `recipe` has 3 keys: `name`, `ingredients`, and `steps`
+
+    v. With JSX, how do we roll these into reusable components that display the data?
+
+    [js]
+        const data = [...];
+
+        function Menu (props) {
+            // don't use extra slashes in actual code; only used for sublime notes syntax highlighting
+            return (
+                <article>
+                    <header>
+                        <h1>{props.title}</h1/>
+                    </header/>
+                    <div className="recipes">
+                        {props.recipes.map((recipe, i) => (
+                            <Recipe
+                                key={i}
+                                name={recipe.name}
+                                ingredients={recipe.ingredients}
+                                steps={recipe.steps}
+                            />
+                        ))}
+                    </div/>
+                </article/>
+            );
+        };
+
+        function Recipe (props) {
+            [...]
+        };
+
+        ReactDOM.render(
+            <Menu recipes={data} title="Delicious Recipes" />,
+            document.getElementById("root")
+        );
+    [end]
+
+    vi. Spread operator can be used in the map call:
+
+    [js] props.recipes.map((recipe, i) => <Recipe key={i} {...recipe} \>); [end]
+
+    This is a drop-in replacement for the name...ingredient...steps= verbose code above;
+
+    BUT remember that it will pass ALL properties, so don't use it if it has information you don't want
+
+    vii. Remember that props can be replaced with object destructuring { title, recipes } so that we
+    don't have to repeat calls to props in the code
+
+    [js]
+        function Menu ({ title, recipes }) {
+            // ...
+            <h1>{title}</h1>/ // extra slash just for syntax highlighting fix for notes
+            // ...
+            { recipes.map ... }
+        }
+    [end]
+
+    viii. Full implementation in Demos folder

@@ -1,0 +1,311 @@
+Chapter 4 - How React Works
+
+See also: React Virtual DOM
+
+Stuff covered later in the book: views, keys
+
+1. Intro
+
+    i. React is built on JSX, a JavaScript syntax that looks much like HTML
+
+    ii. React consists of elements and components, the latter of which can be customized
+
+2. Page Setup
+
+    i. React has two dependencies, React + ReactDOM
+
+    ii. React creates views (not explained yet in book)
+
+    iii. ReactDOM is the library that does the actual UI rendering
+
+    iv. Stored on the unpkg CDN
+
+    An HTML code example is provided here:
+
+    [html]
+        <!DOCTYPE HTML>
+        <html>
+            <head>
+                <meta charset="utf-8" />
+                <title>React Samples</title>
+            </head>
+            <body>
+                <!-- Target container -->
+                <div id="root"></div>
+                <!-- React library & ReactDOM (Development Version)-->
+                <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+                <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+                <script>
+                    // JS/React code goes here!
+                </script>
+            </body>
+        </html>
+    [end]
+
+    v. This is a bare bones implementation, although the business JS can be loaded in a separate file
+
+    vi. This loads the development version, which shows all warnings and errors in console.
+
+    vii. Replace "development.js" with "production.min.js" to use a minified production version
+
+3. React Elements
+
+    i. What is HTML? Basically directions for the browser to create the Document Object Model (a list of the web page's working pieces)
+
+    ii. Each element in the HTML becomes a DOM element when the page is loaded
+
+    iii. The nesting of elements creates, starting from <html>, essentially a branched, hierarchical *tree* of elements
+
+    Working example from book:
+
+    [html]
+        <section id="baked-salmon">
+            <h1>Baked Salmon</h1>
+            <ul class="ingredients">
+                <li>2 lb salmon</li>
+                <li>5 sprigs rosemary</li>
+                <li>2 T olive oil</li>
+                <li>2 small lemons</li>
+                <li>1 tsp kosher salt</li>
+                <li>4 cloves chopped garlic</li>
+            </ul>
+            <section class="instructions">
+                <h2>Cooking Instructions</h2>
+                <p>Preheat oven to 375 degrees.</p>
+                <p>Lighting coat aluminum-foiled baking pan with oil.</p>
+                <p>Place salmon on foil.</p>
+                <p>Cover with rosemary, sliced lemons, chopped garlic.</p>
+                <p>Bake for 15-20 minutes until cooked through.</p>
+            </section>
+        </section>
+    [end]
+
+    iv. Single-page apps were historically built by writing JavaScript to replace sections of the DOM with user interaction
+
+    v. React here is an intermediary that sort-of does this for us: JSX -> React -> React DOM -> React -> Browser DOM
+
+    vi. It has its own virtual DOM, dictated in JSX, that it then uses to directly change the original DOM
+
+    vii. What's an <h1> element look like in React?
+
+    [js]React.createElement("h1", { id: "recipe-0" }, "Baked Salmon");[end]
+
+    ix. Args for createElement, in order:
+        - Element type
+        - Element attributes/properties
+        - What to put inside the opening and closing tags of the element
+
+    x. React takes this and creates this in the actual DOM:
+
+    [html]<h1 id="recipe-0">Baked Salmon</h1>[end]
+
+    xi. If you log the output of that .createElement call, what does it look like?
+
+    [js]
+        {
+            $$typeof: Symbol(React.element), // React internals
+            "type": "h1",
+            "key": null, // Explained later
+            "ref": null, // Explained later
+            "props": {id: "recipe-0", children: "Baked Salmon"},
+            "_owner": null, // React internals
+            "_store": {} // React internals
+        }
+    [end]
+
+4. ReactDOM
+
+    i. Does the actual rendering with the ReactDOM.render method
+
+    ii. First arg: Element to render, second arg: element we want to append the rendered element to
+
+    [js]
+        const dish = React.createElement("h1", null, "Baked Salmon");
+
+        ReactDOM.render(dish, document.getElementById("root"));
+    [end]
+
+    iii. Renders <h1>Baked Salmon</h1> as a child of "div#root" as seen in the first example on the page
+
+    iv. Apparently you could not do this with arrays of ReactElements before, but you can as of 2020/React 16:
+
+    [js]
+        const dish = React.createElement("h1", null, "Baked Salmon");
+        const dish = React.createElement("h2", null, "Coconut Cream Pie");
+
+        ReactDOM.render([dish, dessert], document.getElementById("root"));
+    [end]
+
+5. Children
+
+    i. The third and any additional arguments passed to .createElement will be children of the created element:
+
+    [js]
+        const dishUl = React.createElement(
+            "ul", // unordered list
+            null, // no additional properties
+            React.createElement...,
+            React.createElement...,
+            React.createElement...,
+            React.createElement...,
+            React.createElement...
+        );
+    [end]
+
+    ii. Invoking this creates dishUl, the <ul> object, in the virtual DOM
+
+    iii. It then sets dishUl's props.children to an array containing each of those additional elements
+
+    iv. The book proceeds to write an extremely verbose replication of the first HTML example in this chapter.
+
+    v. Maybe *too* verbose --Hopefully this isn't how the framework works everywhere?
+
+    vi. class is a reserved word in JavaScript, so remember that you want {className: "class-name"} or .className() instead of .class.
+
+    vii. The preceding verbose examples are said to be what pure React looks like (the code the library actually processes),
+    but (speculation) is maybe abstracted or shortened in writing practice.
+
+    viii. Constructing elements with data
+
+        a. The book says a major advantage of React is that it allows you to keep data and UI elements separate (that is, the button and what's written on it)
+
+        b. The next example cuts down a bit on the verbosity of the previous examples:
+
+        [js]
+            const ingredients = [
+                "flour",
+                "water",
+                "salt",
+                "yeast"
+            ];
+
+            const ingredientList = react.createElement(
+                "ul",
+                { className: "ingredients" },
+                ingredients.map((ingredient, i) => react.createElement("li", { key: i }, ingredient))
+            );
+        [end]
+
+            - Key (covered later in the book) in the li .createElement call is a React internal object tracking property
+
+            - It should be included when using array functions to create elements to avoid warnings and performance issues
+
+6. React Components
+
+    i. Components are the "parts" of a web UI, like knobs or buttons on a dashboard
+
+    ii. If you have three different recipes, the data is different but the underlying concepts are the same
+
+    iii. This means we can re-use the parts between them and just change out the data. It's DRY!
+
+    iv. Similar to Rails partials, but:
+
+        a. Without having to expensively re-serve the UI from the back-end
+
+        b. Without having to reattach event handlers
+
+        c. The data parts of the component/partial are simply swapped with the requested data
+
+    v. Book lists a hard-coded React example
+
+    vi. Here's the better, modular one it follows up with:
+
+    [js]
+        // pretend a list of strings is here
+        const ingredients = [];
+
+        function IngredientsList() => (
+            react.createElement(
+                "ul",
+                { className: "ingredients" },
+                items.map((ingredient, i) => // take note of "items" here
+                    React.createElement("li", { key: i }, ingredient)
+                )
+            )
+        );
+
+        ReactDOM.render(
+            React.createElement(IngredientsList, { items: secretIngredients }, null), // "items" in this properties object will be the "items" variable in IngredientsList's createElement call
+            document.getElementById("root")
+        );
+    [end]
+
+    yields
+
+    [html]
+        <!-- this obviously goes inside div#root -->
+        <IngredientsList items="[...]"> <!-- [...] is shorthand for the whole array literal, e.g. [flour, water, salt, yeast] -->
+            <ul className="ingredients">
+                <li key="0">flour</li>
+                ...
+                <li key="3">yeast</li>
+            </ul>
+        </IngredientsList>
+    [/html]
+
+    vii. React has an object called props? This isn't explained.
+
+    Code example from book:
+
+    [jsx]
+        function IngredientsList(props) {
+            return React.createElement(
+                "ul",
+                { classname: "ingredients" },
+                props.items.map((ingredient, i) =>
+                    React.createElement("li", { key: i }, ingredient)
+                )
+            );
+        };
+    [end]
+
+    It then repeats this code with a "cleaner" example, subbing out "props" with { items } in the IngredientsList args and props.items with just items.
+
+    So you can just *assume* function declarations in React know to draw from props?!
+
+    Nothing is explained here!
+
+7. React Components: A Historical Tour
+
+    i. In legacy apps, components were defined in other ways:
+
+        a. createClass, circa 2013
+
+            - Implementation:
+
+            [jsx]
+                const IngredientsList = React.createClass({
+                    displayName: "IngredientsList",
+                    render() {
+                        return React.createElement(
+                            "ul",
+                            { className: "ingredients" },
+                            this.props.items.map((ingredient, i) =>
+                                React.createElement("li", { key: i }, ingredient)
+                            )
+                        )
+                    }
+                });
+            [end]
+
+            - Deprecated in React 16 ~2017
+
+        b. Class components
+
+            - Implementation:
+
+            [jsx]
+                class IngredientsList extends React.Component {
+                    render() {
+                        return React.createElement(
+                            "ul",
+                            { class: "ingredients" },
+                            this.props.items.map((ingredient, i) =>
+                                React.createElement("li", { key: "i" }, ingredient)
+                            )
+                        );
+                    }
+                }
+            [end]
+
+            - This can still be used, but will likely be similarly cut off at some point
