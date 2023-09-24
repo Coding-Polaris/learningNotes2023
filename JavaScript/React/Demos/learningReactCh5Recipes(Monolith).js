@@ -4,7 +4,7 @@ const helpers = { // DRYing string manipulation
     idify: (string) => { name.toLowerCase().replace(/ /g, "-") },
     isSize: (measurement) => sizes.include(measurement),
     listify: (arr, elType) => arr.map((item, i) => (
-        <{elType} key={i}>{item.name}</{elType}>
+        `<{elType} key={i}>{item.name}</{elType}>`
     ),
     pluralize: ({ amount, measurement }) => (
         isSize(measurement)

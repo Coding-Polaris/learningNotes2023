@@ -18,14 +18,10 @@ Chapter 5 - React with JSX
 
     Non-JSX React:
 
-    [js]
-        // Create IngredientsList from defined component. listOfIngredients = some array of components
-        React.createElement(IngredientsList, {list: listOfIngredients});
-    [end]
+            // Create IngredientsList from defined component. listOfIngredients = some array of components
+            react.createElement(IngredientsList, {list: listOfIngredients});
 
-    [xml] <!-- Just pretend this says jsx for syntax highlighting's sake -->
-        <IngredientsList list={listOfIngredients}></IngredientsList>
-    [/xml]
+            <IngredientsList list="{listOfIngredients}"></IngredientsList>
 
     v. Properties can be either JS expressions (any code statement that returns a value) or strings
 
@@ -47,11 +43,9 @@ Chapter 5 - React with JSX
 
     You can put JSX directly inside JS functions to build more JSX:
 
-    [xml]
-        {props.ingredients.map((ingredient, i) => (
-            <li key="{i}">{ingredient}</li>
-        ))}
-    [end]
+            {props.ingredients.map((ingredient, i) => (
+                <li key="{i}">{ingredient}</li>
+            ))}
 
 5. Babel - https://babeljs.io/
 
@@ -75,43 +69,40 @@ Chapter 5 - React with JSX
 
     v. With JSX, how do we roll these into reusable components that display the data?
 
-    [js]
-        const data = [...];
+            const data = [...];
 
-        function Menu (props) {
-            // don't use extra slashes in actual code; only used for sublime notes syntax highlighting
-            return (
-                <article>
-                    <header>
-                        <h1>{props.title}</h1/>
-                    </header/>
-                    <div className="recipes">
-                        {props.recipes.map((recipe, i) => (
-                            <Recipe
-                                key={i}
-                                name={recipe.name}
-                                ingredients={recipe.ingredients}
-                                steps={recipe.steps}
-                            />
-                        ))}
-                    </div/>
-                </article/>
+            function Menu (props) {
+                return (
+                    <article>
+                        <header>
+                            <h1>{props.title}</h1>
+                        </header>
+                        <div className="recipes">
+                            {props.recipes.map((recipe, i) => (
+                                <Recipe
+                                    key={i}
+                                    name={recipe.name}
+                                    ingredients={recipe.ingredients}
+                                    steps={recipe.steps}
+                                />
+                            ))}
+                        </div>
+                    </article>
+                );
+            };
+
+            function Recipe (props) {
+                [...]
+            };
+
+            ReactDOM.render(
+                <Menu recipes={data} title="Delicious Recipes" />,
+                document.getElementById("root")
             );
-        };
-
-        function Recipe (props) {
-            [...]
-        };
-
-        ReactDOM.render(
-            <Menu recipes={data} title="Delicious Recipes" />,
-            document.getElementById("root")
-        );
-    [end]
 
     vi. Spread operator can be used in the map call:
 
-    [js] props.recipes.map((recipe, i) => <Recipe key={i} {...recipe} \>); [end]
+            props.recipes.map((recipe, i) => <Recipe key={i} {...recipe} \>);
 
     This is a drop-in replacement for the name...ingredient...steps= verbose code above;
 
@@ -120,13 +111,249 @@ Chapter 5 - React with JSX
     vii. Remember that props can be replaced with object destructuring { title, recipes } so that we
     don't have to repeat calls to props in the code
 
-    [js]
-        function Menu ({ title, recipes }) {
-            // ...
-            <h1>{title}</h1>/ // extra slash just for syntax highlighting fix for notes
-            // ...
-            { recipes.map ... }
-        }
-    [end]
+            function Menu ({ title, recipes }) {
+                // ...
+                <h1>{title}</h1>/ // extra slash just for syntax highlighting fix for notes
+                // ...
+                { recipes.map ... }
+            }
 
     viii. Full implementation in Demos folder
+
+7. React Fragments
+
+    i. Rendering two sibling components with fragments:
+
+    Valid starter code:
+
+            function Cat({ name }) {
+                return <h1>The cat's name is {name}</h1>;
+            };
+
+            ReactDOM.render(<Cat name="Jungle" />, document.getElementbyId("root"));
+
+    ii. Invalid code where we try to add a sibling:
+
+            function Cat({ name }) {
+                return (
+                    <h1>The cat's name is {name}</h1>
+                    <p>He's a good boy.</p>
+                );
+            };
+
+    React can't handle orphaned siblings. They must have one parent element at the top level.
+
+    iii. At one point, you had to use divs, which bloated the page.
+
+    iv. Nowadays, to delineate multiple siblings you can just use <>*insert siblings here*</>
+
+    v. <> is shorthand for <React.fragment></React.fragment>
+
+8. Intro to Webpack
+
+    Comprehensive, better resource here:
+
+    https://webpack.js.org/configuration/devtool/
+
+    i. Questions book asks us to consider:
+
+        a. How to deal with JSX and ESNext transformations?
+
+        b. How do we manage library/other software dependencies?
+
+        c. How do we manage image/CSS optimization?
+
+    ii. Tools used (in 2020) to answer these questions:
+
+        a. Browserify
+
+        b. gulp
+
+        c. Grunt
+
+        d. Prepack
+
+        e. But the hero of this story is webpack (due to featureset/support/wide adoption)
+
+    iii. React tools include
+
+        a. create-react-app
+
+        b. Gatsby
+
+        c. Code Sandbox
+
+    iv. Webpack is a "module bundler"
+
+        a. Takes assets and compiles them into a single file
+
+        b. Book says it makes source code able to be broken into modular parts?
+
+        c. By being a single file, only one HTTP request needs to be made to load the assets rather than many
+
+    v. Other functions of webpack
+
+        a. Splitting code into chunks (also called rollups or layers) specific to different pages or devices
+
+        b. Minifying, or removing all extraneous characters and reducing variable names to minimal lengths
+        (reduce size in transit and on client side, but not functionality)
+
+        c. Feature flagging - Sending code to any number except all environments to test new features
+
+        d. Hot Module Replacement (HMR) - Updates changed source code on the fly
+
+    vi. Team development benefits of webpack (according to book):
+
+        a. Modularity - Different people can work on different files/modules which can be imported/exported
+        (? How is this different than normal development or something like an asset pipeline?)
+
+        b. Composition - Creating lots of small, simple components and combining for functionality.
+        Easier to write, test, and replace than large imperative monoliths
+
+        c. Speed - Minifying and lower latency with single HTTP request = faster than many for unminified code
+
+        d. Consistency - Babel/webpack can handle latest changes to JS/JSX, so backward compatibility
+        isn't a worry; behavior will be the same in older browsers thanks to automatic back-translation
+
+    vii. Demo Project
+
+        a. Create
+
+            cd /JavaScript/React/Demos/LR-ch5-Recipes-Webpack/
+
+            npm init -y
+            npm install react react-dom serve
+
+            recipes-app
+                node_modules
+                package.json
+                package-lock.json
+                index.html
+                /src
+                    index.js
+                    /data
+                        recipes.json
+                    /components
+                        Recipe.js
+                        Instructions.js
+                        Ingredients.js 
+
+        b. Break components into modules
+
+            - Move recipe into ./src/data/components/Recipe.js
+
+            - Top the file with `import React from "react";`
+
+            - Make it a module with "export default"
+
+            - Put the data into its own json file and read it
+
+                (gnarly tangentially related regex lesson from js to json conversion here:
+                \w+(?=:) to find unquoted keys, then replace with "$0" where $0 is the text the regex finds)
+
+            - Separate ingredients section -> IngredientsList -> Ingredient and instructions section -> Instruction
+            (see files in the components folder)
+
+            - Import the broken-out modules into Recipe, Recipe and Menu into their own respective files
+
+            - Remove <script> tags with React/ReactDOM from main page, and move with all other imports/final render to index.js:
+
+                import React from "react";
+                import { render } from "react-dom";
+                import Menu from "./components/Menu";
+                import data from "./data/recipes.json";
+
+                ReactDOM.render(
+                    <Menu recipes={data} title="Delicious Recipes" />,
+                    document.getElementById("root")
+                );
+
+        c. webpack build
+
+            - npm install --save-dev webpack webpack-cli
+
+            - while webpack does have a default option that doesn't
+            require a config file,
+
+            - this example will have us build one for understanding's sake
+
+        d. we have this kind of Russian doll thing where each file with an `import`
+        will `import` other files that *themselves* `import` the files *they* need
+
+        e. This creates a tree of `import`s between files called a "dependency graph".
+        If we were running this manually in the browser, we'd start by running the first file in the tree.
+
+        f. webpack is able to do this automatically
+
+        g. import was not standard JS at one point, and must typically be reconciled with Babel in older browsers
+
+        h. In our config, we need to tell webpack to run JSX -> React elements
+
+        i. webpack.config.js - just another module that exports a {} containing instructions for webpack
+
+        j. it always goes in the root folder of an app
+
+        k. Check demo folder for code
+
+        l. install Babel dependencies
+
+            npm install babel-loader @babel/core --save-dev
+
+            npm install @babel/preset-env @babel/preset-react --save-dev
+
+        m. webpack config: entry, output, module
+
+        n. finally, .babelrc presets file
+
+        o. time to run webpack??
+
+            npx webpack --mode development
+
+        p. when this is done, errors will usually manifest from dependency tree issues
+
+        q. indeed, had tons of syntax problems with JS and JSON. nice way of finding these without
+        running in the browser and hand-combing each file wondering why nothing renders
+
+        r. Can also add this npm script to package.json to create a webpack running shortcut
+
+            "scripts": {
+                "build": "webpack --mode production"
+            }
+
+            followed by
+
+            npm run build
+
+        s. Yay!
+
+            Bundle built. The book says it should be in the `dist` folder, which is also where index.html should go.
+
+        t. After hacking together a basic Ruby WEBrick server for my index.html to avoid CORS with trying to open it with the filesystem,
+        my poor app renders absolutely nothing.
+
+        Fiddling a lot with urls and content-types and placement in the page and server settings finally yields
+        that ReactDOM can't be found.
+
+        The next section is source mapping, which will tell me which of my files in the bundle go where.
+        Maybe this can tell me if ReactDOM is properly included?
+
+        I also did a "npm install react-dom --save-dev", solving the aforementioned.
+
+        u. After a ton of additional headaches with undefined methods and variables of my own design in the bundle,
+        it looks like it's time to look at the next section to help resolve the exact location and nature of bugs.
+
+    viii. Source mapping
+
+        a. Creates a map of the bundle's dependency tree and the individual files.
+        Great for debugging.
+
+        b. Added this to the webpack config js:
+
+            module.exports = {
+                // ...
+                devtool: "source-map"
+            };
+
+            Apparently it's outdated in webpack 5.
+
+        c. created
