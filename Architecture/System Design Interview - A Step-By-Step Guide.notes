@@ -39,6 +39,8 @@ conveying thought process/knowledge/suitability/value
 
 			- get a rough estimate of how many users we're building for
 
+			- how many queries per second?
+
 	ii. Propose high-level design and get buy-in - 20 minutes
 
 		a. Develop a high-level design that the interviewer agrees with
@@ -120,8 +122,49 @@ conveying thought process/knowledge/suitability/value
 
 			- Use a lot of high level black boxes at this stage, don't get into the super detailed diagrams
 
+			- Hash out data model and schema
+
+				- Data access patterns
+
+				- Read/write scale
+
+				- Data modeling affects performance significantly at scale
+
+				- Can discuss DB and indexing options here
+
+			- When the high level overview is complete, review it and make sure all features are end-to-end complete
+
 	iii. Design deep dive - 15 minutes
 
+		a. This is  for identifying potentially problematic areas
 
+		b. Find solutions
+
+		c. Discuss tradeoffs
+
+		d. *Work with the interviewer* to identify topics of discussion
+
+			- Non-functional requirements might be here:
+
+				- Security
+				- Consistency
+				- Freshness
+				- Accuracy
+				- Performance
+				- Scale
+
+			e. This section is open-ended. No one-size-fits-all is perfect
+
+			f. Pay attention to nonverbal feedback
+
+			g. Probe potential dissatisfaction with design points using questions
+
+			h. Be ready to come up with and coherently discuss multiple solutions to problems of interest
+
+			i. Discuss scope (*quantify* users, load, etc.) of problem, implementation, advantages, and disadvantages of each solution
+
+			h. Repeat for about three problems
 
 	iv. Wrap-up - 5 minutes
+
+		a. Questions about the company
