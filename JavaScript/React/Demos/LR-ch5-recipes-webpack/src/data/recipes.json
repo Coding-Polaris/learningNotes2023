@@ -1,0 +1,36 @@
+[
+    {
+        "name": "Baked Salmon",
+        "ingredients": [
+            { "name": "Salmon", "amount": 1, "measurement": "lb" },
+            { "name": "Pine nuts", "amount": 1, "measurement": "cup" },
+            { "name": "Butter lettuce, chopped", "amount": 2, "measurement": "cup" },
+            { "name": "Yellow squash", "amount": 1, "measurement": "med" },
+            { "name": "Olive oil", "amount": 0.5, "measurement": "cup" },
+            { "name": "Garlic", "amount": 3, "measurement": "clove" }
+        ],
+        "steps": [
+            "Preheat oven to 350 degrees",
+            "Spread olive oil on glass baking dish",
+            "Add yellow squash. Bake for 30 minutes",
+            "Add salmon, garlic, and pine nuts",
+            "Bake for an additional 15 minutes",
+            "Remove from oven; serve with lettuce"
+        ]
+    },
+    {
+        "name": "Fish Tacos",
+        "ingredients": [
+            { "name": "Whitefish", "amount": 1, "measurement": "lb" },
+            { "name": "Cheese", "amount": 1, "measurement": "cup" },
+            { "name": "Iceberg Lettuce", "amount": 2, "measurement": "cup" },
+            { "name": "Tomatoes", "amount": 2, "measurement": "large" },
+            { "name": "Tortillas", "amount": 3, "measurement": "med" }
+        ],
+        "steps": [
+            "Cook fish on grill until hot",
+            "Place fish on tortillas",
+            "Top with lettuce, tomatoes, and cheese"
+        ]
+    }
+]
