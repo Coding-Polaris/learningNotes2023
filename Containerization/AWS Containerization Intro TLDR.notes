@@ -1,0 +1,36 @@
+TL;DR
+
+AWS Containerization Intro - Pulled Sep 2023
+
+https://aws.amazon.com/what-is/containerization/
+
+1. What's containerization?
+
+	a. Containers bundle together all the software/libraries/dependencies you need to run something
+
+	b. They can (theoretically) run on any OS or infrastructure (e.g. Linux/Windows/MacOS)
+
+	c. This means code doesn't have to be tailored to those since the container takes care of it
+
+2. What benefits does it have?
+
+	a. *Portability* - Easily run the same container across many *different* systems quickly,
+	instead of having to do a bunch of installation and config. Allows old apps to be run in
+	new and different environments
+
+	b. *Scalability* - Full Virtual Machines require an entirely new OS to be booted up.
+	Containers don't need a new OS, they just use resources partitioned to them by the main
+	system OS. So you can run a bunch of them instead of the overhead of VMs. One breaking
+	won't affect how the others run.
+
+	c. *Agility* - All the config and installation stays inside just the container, meaning
+	that any problems with the program or container don't spill over to the OS or other
+	programs, creating fewer potential slowdowns in development
+
+3. Where would we use it?
+
+	a. *Cloud Migration*. Take some old software, put it in a container, and be able to run
+	it from any cloud machine, regardless of the OS/hardware/architecture for which it was made.
+	This avoids having to completely rewrite the old app for the sole purpose of running it.
+
+	b. *Building microservice architecture*. 

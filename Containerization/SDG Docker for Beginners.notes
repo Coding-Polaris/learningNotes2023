@@ -1,0 +1,55 @@
+Based on 
+
+"Do Data Engineers Need To Learn Docker? Docker Intro And Tutorial On Setting Up Airflow"
+
+by Seattle Data Guy
+
+Uploaded Sep 13, 2023
+
+https://www.youtube.com/watch?v=oVKuwk8xY38
+
+1. Docker is a tool, and like any tool in big tech you may or may not need it -
+
+But it's still good to understand how to use
+
+2. Where might you use Docker as a Data Engineer?
+
+    - Set up an entire data platform on Kubernetes or helm chart (?)
+
+    - Have data components that need to run locally
+
+3. What Docker is and why it's important
+
+    i. What it does
+
+        a. Docker takes a bunch of dependencies, code, etc. for a program
+        and automates its installation/management
+
+        b. This makes the whole thing behave like a discrete single,
+        self-contained piece of software
+
+        c. This avoids having to go through a lot of setup and configuration
+        to fire up an instance of that software 
+
+        d. In theory it should then run the same way across pretty much all computers
+
+    ii. What Docker "is"
+
+        a. A software platform that lets you have some of the advantages of a virtualized OS
+
+        b. Serves as the interface between the OS and the Docker'd software package
+
+        This means that Docker prevents dependencies from getting baked into the OS
+
+    iii. Commands
+
+        a. docker run - fires up your software container
+
+        b. docker ps - similar to unix ps, shows you the running containers and their status
+
+        c. docker log <id> - why'd a container fail?
+
+        d. docker exec instance; bash - similar to sshing into another machine but having its dev environment
+
+        e. docker compose up/down - start or restart services in the docker compose yaml file;
+        down takes down running services.
