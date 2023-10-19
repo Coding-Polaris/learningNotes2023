@@ -6,10 +6,10 @@ server = WEBrick::HTTPServer.new Port: 8192, DocumentRoot: Dir::pwd
 
 trap 'INT' do server.shutdown end
 
-server.mount_proc "/index.html" do |request, response|
+server.mount_proc "/recipes.html" do |request, response|
 	response.status = 200
 	response['Content-Type'] = 'text/html'
-	response.body = File.open("index.html") do |f| f.read end
+	response.body = File.open("./Ch5\ Recipes\ w\ Webpack/recipes.html") do |f| f.read end
 end
 
 # bundle_path = File.join(Dir::pwd, 'dist/assets/bundle.js')

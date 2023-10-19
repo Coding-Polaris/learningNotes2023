@@ -1,0 +1,13 @@
+Based on https://www.digitalocean.com/community/tutorials/composition-vs-inheritance
+
+1. Composition
+
+	a. An object-oriented programming design technique
+
+	b. Creates a "has-a" relationship between objects
+
+	c. A person who "has-a" job:
+
+	[js]
+		export default 
+	[end]

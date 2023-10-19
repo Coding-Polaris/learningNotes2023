@@ -356,4 +356,34 @@ Chapter 5 - React with JSX
 
             Apparently it's outdated in webpack 5.
 
-        c. created
+        c. With the map, you can debug your JS as though the browser had loaded them all individually
+
+        d. Use breakpoints + Scope + Watch panels to evaluate code and variables at different points
+
+    ix. Create React App
+
+        a. Auto generator for a simple React app, not unlike `rails g`
+
+        b. Inteded to avoid needing to configure webpack
+
+        c. `npm install -g create-react-app`
+
+        d. `create-react-app <destination-folder-name>`
+
+        e. Creates project with 3 dependencies: React, ReactDOM, react-scripts
+
+        f. react-scripts pulls in Babel, ESLint, webpack, and other React dependencies
+
+        g. Creates directory + file `./src/App.js`
+
+            - root of app's dependency tree; put your starting import statements here
+
+            - can edit Root Component here
+
+        h. `npm start` or `yarn start` when in project root folder to start a server instance on port 3000
+
+        i. `npm test` `yarn test` run project tests interactively
+
+        j. `npm run build` `yarn build` creates full JSX -> JS/ES6 -> ESNow + minified bundle
+
+        

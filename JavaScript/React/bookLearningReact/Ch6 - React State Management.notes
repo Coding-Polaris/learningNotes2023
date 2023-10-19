@@ -1,0 +1,109 @@
+1. Intro
+
+    1. Properties, the attrs on React components, are only half the picture
+
+    2. *State* is driven by changeable data
+
+    3. While not explained yet, it appears that changes to state flow down the Component Tree to each Component's properties, changing their values
+
+    4. User input is said to flow back *up* the tree.
+
+2. First example - star rating component
+
+    1. get star icon resources - `npm i react-icons`
+
+    2. resource location: https://react-icons.netlify.com/
+    
+    3. The code:
+
+            import React from "react";
+            import { FaStar } from "react-icons/fa";
+            
+            export default function StarRating() {
+                return [
+                    <FaStar color="red" />,
+                    <FaStar color="red" />,
+                    <FaStar color="red" />,
+                    <FaStar color="grey" />,
+                    <FaStar color="grey" />
+                ];
+            }
+
+        Individual Star components:
+
+            const Star = ({ selected = false }) => {
+                <FaStar color={ selected ? "red" : "grey"} />
+            };
+
+        Redoing this reusably and with a customizable number of stars:
+
+            const createArray = length => [...Array(length)];
+            export default function StarRating({ totalStars = 5 }) {
+                return
+            }
+
+        This demo will be in the /Demos folder and eventually viewable as part of a server instance that hosts all of these demos, complete, live.
+
+3. The useState Hook
+
+    1. Let's make StarRating clickable!
+
+    2. On click, store the chosen value. Since it's changeable, this value goes in React state.
+
+    3. *Hooks* are reusable code that changes state. They *hook up* this code to our components.
+
+    4. As such they're not components but rather give them the behavior to change state.
+
+    5. React comes with many prefab hooks
+
+    6. `useState` adds state to a component
+
+    7. Example w/ StarRating:
+
+            // Editing to set the state to three selected stars
+
+            import React, { useState } from "react";
+            import { FaStar } from "react-icons/fa";
+
+            export default function StarRating({ totalStars = 5 }) {
+                const [selectedStars] = useState(3);
+                return(
+                    <> // remember fragments?
+                        {createArray(totalStars).map((n, i) => (
+                            <Star selected={selectedStars > i} />
+                        ))}
+                        <p>
+                            {selectedStars} of {totalStars} stars
+                        </p>
+                    </>
+                )
+            }
+
+        And adding the event handler in Star:
+
+            const Star = ({ selected = false, onSelect = f => f }) => (
+                <FaStar color={selected ? "red" : "grey"} onClick={onSelect} />
+            );
+
+        I don't really understand the onClick=onSelect and f => f voodoo, so skipping that for now.
+
+        Continuing on, assuming we can click this thing (to be tested later in Demos):
+
+            // Editing state of selectedStars/setSelectedStars to set default of 0.
+            // Make index-based click handler to update state
+
+            export default function StarRating({ totalStars = 5 }) {
+                const [selectedStars, setSelectedStars] = useState(0);
+                return (
+                    <>
+                        {
+                            createArray(totalStars).map((n, i) => (
+                                <Star
+                                    selected={selectedStars > i}
+                                    onSelect={() => setSelectedStars(i + 1)}
+                                />
+                            ))
+                        }
+                    </>
+                )
+            }
