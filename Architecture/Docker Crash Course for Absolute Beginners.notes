@@ -1,0 +1,199 @@
+Adapted from TechWorld with Nana's video "Docker Crash Course for Absolute Beginners"
+
+https://www.youtube.com/watch?v=pg19Z8LL06w
+
+===
+
+tl;dr
+
+Image - A piece of software Docker can run across any platform
+
+Container - A running instance of an image. Can run many concurrently. (Not sure at time of running how to handle traffic to each)
+
+`docker images` - See all installed images
+
+`docker ps` - See all running images (containers)
+
+`docker run <image>:<version>` - Start container with version tag. Auto downloads if not on host machine and available on DockerHub
+
+`... -p <desired port>:<port image thinks it's running on>` - Route traffic through desired port to container's expected port. These typically should, however, be the same
+
+`docker stop <process>` - Self-explanatory
+
+===
+
+1. What is Docker?
+
+    - Virtualization software that makes developing/deplying apps faster
+
+    - Does this by packaging dependencies, config, system tools, versions/runtime together
+
+    - This packaging of required supporting software/config, everything the app needs to run, is known as a container
+
+    - This makes the app easy to share and distribute
+
+2. Why is this a big deal?
+
+    1. Development
+
+        - All this stuff used to have to be installed by hand just to run/work on an app
+
+        - Every single developer would have to do this for every single machine
+
+        - Environments also different between Mac/Windows,
+        meaning architecture specific needs to be found and installed
+
+        - Installing by hand also introduces a lot of room for error and non uniformity
+
+        - With containers, install Docker once and download/start container
+
+        - Same process on any computer
+
+        - Apparently one docker command per service? `docker run <service>`
+
+        - Can run different versions of same services concurrently;
+        no configuration collisions
+
+    2. Deployment
+
+        - Development team used to be responsible for artifact/software package
+
+        - Example, a JAR file and DB
+
+        - They included install instructions, such as for installing Java and DB as well as DB setup for their specific app
+
+        - Operations would carry out these instructions to install on servers
+
+        - Huge problem is loading directly on OS
+
+        - High risk, low flexibility: error prone install + tethered to one set of versions/configs
+
+        - Text instructions = higher chance of miscommunications
+
+        - With Docker, you just have one container to deal with that has standardized install + run
+
+3. Why did Docker become so widely adopted? (as opposed to Virtual Machines - what's the difference?)
+
+    1. First, how an Operating System works:
+
+        1. The Kernel - The part of the OS that dictates to the OS's hardware
+
+        2. The Application Layer - The part in which apps run, and dictate to the kernel
+
+        3. So kernel can be thought of as a middleman
+
+    2. So Docker is basically a virtual application layer that uses the host system's kernel to talk to hardware
+
+    3. Virtual Machines have BOTH an AL and a kernel
+
+    4. Container Advantages
+
+        1. Docker images are much smaller (megabytes vs VM software GBs in size)
+
+        2. Much faster startup time
+
+    5. Disadvantage is that you can't run stuff that requires a different kernel (ex. linux to windows)
+
+    6. Fun fact: Docker was originally made for Linux
+
+    7. Then they made Docker Desktop:
+
+        1. Has a "Hypervisor layer" which emulates the Linux kernel and allows running Linux containers on Mac/Windows
+
+    8. Install based on Docker's official instructions for your system
+
+4. Components of Docker Desktop
+
+    1. The service or engine: A daemon (silently-running background utility program) server that manages images and containers
+
+    2. Command Line Interface (CLI) for stopping/starting
+
+    3. Graphical User Interface (GUI)
+
+=== skipping installation fluff here ===
+
+5. Docker Images vs Containers
+
+    1. App + environment packaged up by Docker = Image
+
+        - Language/framework dependencies
+        - Runtimes
+        - OS Layer (hyperlayer, linux, etc.)
+
+    2. Container executes the image; starts the application and other software
+
+    3. Container = *running instance of image*
+
+    4. Therefore, you can run *multiple containers* of the same image
+
+    5. `docker images` - shows you a list of created images
+
+    6. `docker ps` - shows all running containers
+
+6. Docker Registry
+
+    1. How do we get images of platform software (npm, redis, etc.) in the first place?
+
+    2. Docker Registries
+
+        1. Official images from devs, usually
+
+        2. Or developed by Docker itself
+
+        3. Docker offers registries on DockerHub
+
+        4. Docker has a team who maintains these images, who work with dependency creators
+
+        5. DockerHub typically has descriptions etc. for how to work with Docker images
+
+        6. As technology changes, images are usually updated to match new versions
+
+        7. Old versions are still available through archive
+
+        8. The latest version is tagged latest
+
+        9. Will usually be delivered if dependency is requested without specific version
+
+    3. How to install
+
+        1. `docker pull <registry image name>:[<registry image tag>]` -- downloads the image to local
+
+        2. DockerHub is the default pull location, though this can be changed
+
+        3. If you do `docker images` after pulling 2 different versions you will see them!
+
+        4. You can now run `docker run` and `docker ps` to run/see the running image
+
+        5. `docker run -d` (or --detach) makes your container a daemon, or background process
+
+        6. So it won't block you from entering commands in the terminal
+
+        7. But if you do run without -d, you can press Ctrl-C to stop the container
+
+        8. `docker logs` w/ container ID from `docker ps` = logs from that container
+
+        9. `docker run` can actually be used to run images you don't yet have - Docker will just pull what you request from DockerHub
+
+        10. Not immediately listed in video, but `docker stop <process number>` will stop a running -d / daemon container
+
+    7. Port Binding
+
+        1. How do we access the container? We can't.
+
+        2. Have to tell Docker to "expose the container's ports."
+
+        3. Every container's image has a standard port on which it is supposed to run
+
+        4. For example, nginx usually defaults to port 80
+
+        5. But this doesn't mean you can just reach it from your machine once it's running; port 80 won't have anything on it
+
+        6. You have to tell Docker to connect a port of your choosing to the container's port
+
+        7. Do this with `docker run -p <port you want to access it through>:<image's default port>`
+
+        8. So nginx could for example get data from localhost:9000 even though it expects on port 80, by saying `docker run -p 9000:80`
+
+        9. Even though you can do this, typically you should bind to the same port your app intends to use
+
+        10. 
