@@ -385,5 +385,3 @@ Chapter 5 - React with JSX
         i. `npm test` `yarn test` run project tests interactively
 
         j. `npm run build` `yarn build` creates full JSX -> JS/ES6 -> ESNow + minified bundle
-
-        

@@ -6,19 +6,50 @@ https://www.youtube.com/watch?v=pg19Z8LL06w
 
 tl;dr
 
-Image - A piece of software Docker can run across any platform
+Install Desktop and CLI. Integrate with your OS's shell.
 
-Container - A running instance of an image. Can run many concurrently. (Not sure at time of running how to handle traffic to each)
+Definitions:
 
-`docker images` - See all installed images
+    Image - A piece of software Docker can run across any platform
 
-`docker ps` - See all running images (containers)
+    Base Image - An external, prefab image containing a runtime/software package like Node or Ruby.
+    A piece of the app's required environment.
 
-`docker run <image>:<version>` - Start container with version tag. Auto downloads if not on host machine and available on DockerHub
+    Repository - A collection of images and their versions
 
-`... -p <desired port>:<port image thinks it's running on>` - Route traffic through desired port to container's expected port. These typically should, however, be the same
+    Registry - A collection of repositories
 
-`docker stop <process>` - Self-explanatory
+    Container - A running instance of an image. Can run many concurrently. (Not sure at time of running how to handle traffic to each)
+
+    Dockerfile - The "how to build" list of things for Docker to do so that your app's environment is installed
+
+Shell Commands:
+
+    `docker images` - See all installed images
+
+    `docker ps` - See all running images (containers)
+
+    `... -a` - Show running *and stopped* containers
+
+    `docker run <image>:<version>` - Start *new* container with version tag. Auto downloads if not on host machine and available on DockerHub
+
+    `... --name` - Give your new container a custom name for id purposes. Can later be combined with `stop` to stop the container.
+
+    `... -p <desired port>:<port image thinks it's running on>` - Route traffic through desired port to container's expected port. These typically should, however, be the same
+
+    `docker stop <process>` - Self-explanatory
+
+Dockerfile Commands:
+
+    `FROM <image>:<version>` - Retrieve a base image, usually from DockerHub
+
+    `COPY <source directory> <destination directory *inside container*>` - Copy file from local Dockerfile dir to image file
+
+    `WORKDIR` - equivalent of `cd` to change Docker current working directory
+
+    `RUN` - Execute command as though in a terminal
+
+    `CMD \[\"<command>\", <arguments...>\]` - Start the container. Always the final command in the Dockerfile
 
 ===
 
@@ -196,4 +227,87 @@ Container - A running instance of an image. Can run many concurrently. (Not sure
 
         9. Even though you can do this, typically you should bind to the same port your app intends to use
 
-        10. 
+    8. Starting + stopping
+
+        1. `docker ps -a` - List running + stopped containers
+
+        2. When stopping a Docker container, you can pass `docker stop` one of three identifiers:
+
+            1. The default random-word name Docker gives a container on start
+
+            2. The random character hash ID Docker gives a container on start
+
+            3. The custom name passed through `docker start <image> --name <custom name>`
+
+        3. `docker start` can start a previously stopped container with these same identifiers
+
+        4. Remember, you can retrieve the ids with `docker ps -a`
+
+        5. Same rules go for `docker log <name/id>`
+
+    9. Private Docker Registries
+
+        1. DockerHub is a public registry.
+
+        2. Companies can create private registries.
+
+        3. Examples: AWS/ECS, Google Cloud, MS Azure, and Nexus
+
+        4. DockerHub itself offers private options
+
+        5. Repositories - A collection of image versions.
+
+        6. So, Registries contain multiple Repositories.
+
+    10. Dockerfile - Create your own images
+
+        1. Why? Release image to end users on any machine to use as container.
+
+        2. How? Use an image definition, using a file called the Dockerfile
+
+        3. Dockerfile structure
+
+            1. Dockerfiles start from a "parent" or "base image"
+
+            2. Parent/Base image = lightweight linux distro w/ the environment you want to distribute
+
+            3. Ex: You might have node or python installed in your base image
+
+            4. The rest of your stuff goes "atop" the base images as they depend on them to run
+
+        3. Ex: Have a Node application?
+
+            1. We're going to make an ordered list of all environment install steps, the *Dockerfile*
+
+            2. This list will be *automatically run* on the host machine, in the order you list it
+
+            3. *This is designed to grab and configure the entire environment needed for your app to run*
+
+            4. In the app root, `touch Dockerfile` in your shell
+
+            5. `FROM` - Command to build part of our app's image FROM the base image passed to the Dockerfile command.
+
+            6. In this case, `FROM node:19-alpine`, or `FROM` base image of "node" version "19-alpine".
+
+            7. This will install node:19-alpine *first*
+
+            8. `COPY <source directory> <destination directory *inside container*>` - Copies a file from local Dockerfile storage to image file.
+
+            9. Container appears to behave like application root folder, but COPY can create custom subdirectories
+
+            10. `WORKDIR` - basically `cd` to change current working directory
+
+            11. The `RUN` command will execute a command as though you were in a terminal (whether in node, shell, etc.)
+
+            12. `CMD \[\"<command>\", <arguments...>\]` - Always the final command in the Dockerfile. Actually starts the container
+
+        4. Make actual image from definition file
+
+            1. `docker build`
+
+            2. `... -t <name>:<version>` - Build an image with this name and this version. Let's call it node-app:1.0, so `docker build node-app:1.0`.
+
+            3. You'll find running `docker build` adds the brand-spankin-new image to your `docker images` list
+
+            4. After all this, start the app with `docker run -p 3000:3000 node-app:1.0`; remembering `-d` if we want it to run in the background.
+
