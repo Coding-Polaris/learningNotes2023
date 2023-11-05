@@ -9,3 +9,61 @@ Content begins @ 2:00
     3. Space learning!
 
     4. Drill, drill, drill. Repeat exercises
+
+2. Why React?
+
+    1. Composable code
+
+        1. Create a large object out of a bunch of small discrete objects
+
+        2. Typical web pages can be really long, but may consist of a lot of re-used things like links, buttons, etc
+
+        3. React lets us populate the same, re-used component or collections of components, just with new/needed info
+
+        4. In other words, a lot less repetition, behavior described across multiple small files instead of one large monolith
+
+        5. More flexible/modular (reusable and consistent across many pages) and easier to test/maintain
+
+    2. React is Declarative
+
+        1. Declarative - What do we want to do? (abstracting away details)
+
+        2. Imperative - How do we do what we want to do? (describing full detail of each task)
+
+        3. Check the Example 4 code in index.js - reduce a bunch of vanilla js commands to build up an HTML component to one React command that creates the fully-described element
+
+        4. (this doesn't oppose composition, actually it works because of composition)
+
+3. JSX
+
+    1. Javascript XML
+
+    2. Think of it as a flavor of JavaScript that *looks like* html
+
+    3. This was the key piece that made React declarative rather than imperative
+
+    4. Remember that `className` in JSX elements must be used in React instead of `class` as is traditionally used on HTML elements
+
+    5. That's because class is a reserved word
+
+    6. Key difference between JSX and vanilla JS elements (see 5th example) in index JS:
+
+        1. At its core, running JSX returns JavaScript objects containing a description of the HTML object we want.
+
+            1. keys of the object:
+
+                1. type - type of HTML object
+
+                2. props: an object containing things like className and children (including text content)
+
+        2. `console.log(vanillaElement)` returns html
+
+    7. Remember that you can only return a single overarching parent element in JSX
+
+    8. You can have as many nested elements as you want, but you can't have more than one at the top level
+
+    9. If you must return multiple sibling elements, wrap them in a div or <></>
+
+    10. You can save JSX directly into variables, provided you wrap them in parentheses - don't need a function declaration
+
+    11. However, this means you can't use Components in other JSX, making variables less versatile
