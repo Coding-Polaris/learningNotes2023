@@ -111,9 +111,9 @@ Dockerfile Commands:
 
         2. The Application Layer - The part in which apps run, and dictate to the kernel
 
-        3. So kernel can be thought of as a middleman
+        3. So kernel can be thought of as a middleman btwn hardware and front end
 
-    2. So Docker is basically a virtual application layer that uses the host system's kernel to talk to hardware
+    2. So Docker is basically just the application layer, but uses the host system's kernel to talk to hardware
 
     3. Virtual Machines have BOTH an AL and a kernel
 
