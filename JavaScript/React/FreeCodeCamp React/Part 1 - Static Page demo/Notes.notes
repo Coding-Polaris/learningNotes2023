@@ -67,3 +67,47 @@ Content begins @ 2:00
     10. You can save JSX directly into variables, provided you wrap them in parentheses - don't need a function declaration
 
     11. However, this means you can't use Components in other JSX, making variables less versatile
+
+4. React 18 Changes
+
+    1. This command is going to be deprecated in favor of `createRoot`
+
+    2. Instead of `import ReactDOM from "react-dom"`,
+
+    3. Add `/client` to the end of the call, e.g. `import ReactDOM from "react-dom/client"`
+
+    4. The original command is `ReactDOM.render(<what to render>, <where to render it>)`
+
+    5. Now instead, create a root first with `ReactDOM.createRoot(document.getElementById("root"))`
+
+    6. You can then chain the `.render(<what to render>)` method onto this newly defined root
+
+    7. See code in section 6 index.js
+
+5. A quick thought experiment: .append() vs ReactDOM.render()
+
+    1. See Section 6 in index.js
+
+6. Custom Components
+
+    1. Saving JSX as a variable isn't as flexible as Components
+
+    2. In programming generally, functions are reusable pieces of code
+
+    3. Components are basically this concept extended to pieces of webpages
+
+    4. Example:
+
+    function ThingieComponent() {
+        return (<some jsx></some jsx>);
+    }
+
+7. Parent/Child components
+
+    1. See Mini Challenges 1 & 2 in index.js.
+
+8. Styling with classes
+
+    1. Remember that JSX needs you to use `className=` instead of `class=`.
+
+    2. See index.css.

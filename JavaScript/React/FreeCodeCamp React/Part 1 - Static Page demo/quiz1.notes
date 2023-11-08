@@ -1,0 +1,33 @@
+// done blind unless otherwise stated
+
+1. Why do we need to `import React from "react"` in our files?
+
+    We need to include the classes declared in libraries before we can use them.
+
+    At the start of this module, this was done by using a <script> tag that referenced a version of React stored on a CDN.
+    Without that script tag, we must instead tell JS to `import` React.
+
+2. If I were to console.log(page) in index.js, what would show up?
+
+    [object Object], because React JSX objects are just JavaScript objects.
+    They need to be rendered using ReactDOM.render in order to produce HTML.
+
+3. What's wrong with this code:
+```
+const page = (
+    <h1>Hello</h1>
+    <p>This is my website!</p>
+)
+```
+
+    Like with the Highlander, there can only be one top-level element. This has two.
+    It's okay to have infinite nesting/children for the top-level element, as long as there's only one.
+
+4. What does it mean for something to be "declarative" instead of "imperative"?
+
+    Imperative - Take this exact sequence of steps in order to do Thing X.
+    Declarative - Do Thing X; you already know how (the details are abstracted away in your subconscious codebase).
+
+5. What does it mean for something to be "composable"?
+
+    Building a larger, more functional whole out of smaller components, creating a "composition."

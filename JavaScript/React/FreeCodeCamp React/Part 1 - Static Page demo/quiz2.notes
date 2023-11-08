@@ -1,0 +1,39 @@
+Quiz!
+
+1. What is a React component?
+
+    A react Component is a JavaScript function named in Pascal case that returns a reusable piece of JSX.
+    It can simply be plopped into other JSX and all the JSX *it* contains gets stuck into *that* JSX.
+
+    // additional solution notes: like the DOM, JSX pieces are called "elements". Components return elements.
+
+2. What's wrong with this code?
+```
+function myComponent() {
+    return (
+        <small>I'm tiny text!</small>
+    )
+}
+```
+
+    It shold be MyComponent instead of myComponent, since typically we want Pascal case.
+    Also not sure if <small> is valid HTML, but if it is then go off.
+
+3. What's wrong with this code?
+```
+function Header() {
+    return (
+        <header>
+            <nav>
+                <img src="./react-logo.png" width="40px" />
+            </nav>
+        </header>
+    )
+}
+
+ReactDOM.render(Header(), document.getElementById("root"))
+```
+
+    Header shouldn't be a function call in ReactDOM.render. It should be JSX, like <Header />.
+    The image also doesn't have a height, but I'm not sure if that matters or needs to be explicit.
+    (Further research shows that one dimension retains the aspect ratio, so adjusts the height to match)

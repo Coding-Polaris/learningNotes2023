@@ -1,0 +1,67 @@
+/**
+Challenge:
+
+- Add an `ul` inside the Header's `nav` and create
+  the following `li`s: "Pricing", "About", & "Contact"
+- Using flexbox, line up the nav items horizontally, and
+  put them inline with the React logo.
+*/
+
+/* I have no idea how to do this. Let's check the solution. */
+
+body {
+    margin: 0;
+}
+
+#page {
+    display: flex; /* sticky footer! */
+    min-height: 100vh; /* sticky footer! */
+    flex-direction: column; /* sticky footer! */
+    background-color: #333333;
+    color: white;
+}
+
+#main-content {
+    flex: 1;  /* sticky footer! */
+    margin: 15px;
+    font-family: fantasy;
+}
+
+#main-content > h1 {
+    font-family: ;
+}
+
+footer {
+    padding: 15px;
+    font-size: 8pt;
+    font-family: monospace;
+    background-color: mediumslateblue;
+    color: white;
+}
+
+.nav-items {
+    list-style: none;
+    display: inline-flex; /* this was the sauce */
+    color: white;
+}
+
+.nav {
+    font-family: arial;
+    background-color: #111111;
+    padding: 0 15 0 15;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 19px, rgba(0, 0, 0, 0.22) 0px 4px 12px;
+}
+
+.nav-items > li {
+    padding: 10px;
+}
+
+/* Change the image styling to happen in CSS instead of in-line
+  For practice, add a new class to the image in order to style it */
+
+.react-logo {
+    width: 60px;
+}
