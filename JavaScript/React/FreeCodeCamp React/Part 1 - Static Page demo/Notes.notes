@@ -110,4 +110,32 @@ Content begins @ 2:00
 
     1. Remember that JSX needs you to use `className=` instead of `class=`.
 
-    2. See index.css.
+    2. See index.css
+
+9. Organize components
+
+    1. Ziroll's opinion: One file for one component
+
+    2. When abstracting into new files, you'll always have to:
+
+        1. `import React from "react"` in the new file so the JSX can be parsed
+
+        2. `export [default] <NewComponent name>` the class, component, or function you want to use in the main file
+
+        3. `import <NewComponent name> from 'component'` in the main file so you can use the component
+
+        4. Remember you can and may have to specify folder in `from <directory>`, as in `import NewComponent from "./new_component"`
+
+        5. You don't need ".js" at the end of an `import` statement, since JS assumes the file extension is JS by default
+
+10. Running locally with Vite
+
+    1. Tool that helps create local React apps
+
+    2. Better for production
+
+    3. Handles compilation/transpilation, polyfill, bundling, etc.
+
+    4. Vite uses esbuild
+
+    5. Dependencies: node + NPM
