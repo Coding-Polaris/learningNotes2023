@@ -1,0 +1,22 @@
+body {
+    margin: 0 auto;
+}
+
+#main-nav {
+    display: flex;
+    justify-content: space-between;
+    height: 91px;
+    background-color: #21222A;
+}
+
+#main-nav > .title {
+    font-family: inter;
+    font-weight: 700;
+    color: #61DAFB;
+}
+
+#main-nav > .module {
+    font-family: inter;
+    font-weight: 600;
+    color: #DEEBF8;
+}

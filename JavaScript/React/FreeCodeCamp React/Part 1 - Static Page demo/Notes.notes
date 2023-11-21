@@ -128,14 +128,85 @@ Content begins @ 2:00
 
         5. You don't need ".js" at the end of an `import` statement, since JS assumes the file extension is JS by default
 
-10. Running locally with Vite
+10. Running locally with Vite (I'll use this for the future course projects)
 
     1. Tool that helps create local React apps
 
-    2. Better for production
+    2. French for "quick" or "fast"
 
-    3. Handles compilation/transpilation, polyfill, bundling, etc.
+    3. Better for production
 
-    4. Vite uses esbuild
+    4. Handles compilation/transpilation, polyfill, bundling, etc.
 
-    5. Dependencies: node + NPM
+    5. Vite uses esbuild
+
+    6. Dependencies: node + NPM
+
+    7. You can import (as a variable) image files from specific paths,
+
+    8. e.g. `import logo from "./scrimba-logo.png"` allows you to reference the image path with `logo` in the code
+
+    9. This is doable because bundlers actually include images in the bundle file
+
+    10. The same can be done with CSS files, or really anything that can be bundled that you want to reference in your app/page
+
+11. Project outlining
+
+    1. Before starting to code a project, take a glance over a template that you want to create
+
+    2. Model it in your mind, or preferably on paper
+
+    3. Suppose a small page with:
+
+        1. Two spaced elements in a header bar
+        2. A large text header in the body beneath the header
+        3. A list of text items
+        4. What appears to be a fixed background image on the righthand side
+
+    4. How to model?
+
+        student answer:
+
+            1. body margin 0 for 100% width header
+            2. flex for the header and space-evenly with a 2-item UL: a div with the react image and app logo, and the subsection div on the right
+            3. h1 for the big text
+            4. ul for list
+            5. image position fixed on right
+
+        tutor's answer:
+
+            1. divide into two sections
+            2. header: image, logo, section title. do margin: auto for even spacing
+            3. the body with hi and list
+            4. the tutor thinks these two major groups should be their own components
+            5. then group the components together in the "app" or page
+
+12. Figma
+
+    1. Sign up, verify email, etc.
+
+    2. Starter plan PLEEEASE!
+
+    3. "Explore by yourself"
+
+    4. https://www.youtube.com/watch?v=ybc2gkvjMDs
+
+    5. For Scrimba, don't try to modify the files
+
+    6. Turn off multiplayer cursors in options for lower distractions
+
+    7. View-only mode rather than editing
+
+    8. File -> Duplicate to your drafts lets you basically fork a design file
+
+    9. Clicking an element behaves a lot like the inspector in your browser, but more geared for front-end design
+
+    10. Careful if copying CSS: It tends to use `position: absolute;` for everything
+
+    11. But font style etc. can be useful
+
+    12. Round font sizes to nearest
+
+13. Navbar + styling
+
+    1. See folder for "Final Product"
