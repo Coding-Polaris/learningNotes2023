@@ -138,17 +138,23 @@ Content begins @ 2:00
 
     4. Handles compilation/transpilation, polyfill, bundling, etc.
 
-    5. Vite uses esbuild
+    5. Vite uses esbuild, much faster than create-react-app for local dev
 
     6. Dependencies: node + NPM
 
-    7. You can import (as a variable) image files from specific paths,
+    7. create w/ `npm create vite@latest`
 
-    8. e.g. `import logo from "./scrimba-logo.png"` allows you to reference the image path with `logo` in the code
+    8. select framework and javascript flavor
 
-    9. This is doable because bundlers actually include images in the bundle file
+    9. to run, `npm run dev` in target directory
 
-    10. The same can be done with CSS files, or really anything that can be bundled that you want to reference in your app/page
+    10. You can import (as a variable) image files from specific paths,
+
+    11. e.g. `import logo from "./scrimba-logo.png"` allows you to reference the image path with `logo` in the code
+
+    12. This is doable because bundlers actually include images in the bundle file
+
+    13. The same can be done with CSS files, or really anything that can be bundled that you want to reference in your app/page
 
 11. Project outlining
 
