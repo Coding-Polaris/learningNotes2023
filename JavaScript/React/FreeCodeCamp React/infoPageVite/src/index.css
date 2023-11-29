@@ -1,0 +1,68 @@
+body {
+  margin: 0 auto;
+  font-family: Inter;
+  background-color: #282D35;
+}
+
+#main-nav {
+  padding: 0px 2vw 0px 2vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 91px;
+  background-color: #21222A;
+}
+
+#main-nav > .title {
+  font-size: 22pt;
+  font-weight: 700;
+  color: #61DAFB;
+  font-family: Inter;
+  letter-spacing: -0.05em;
+  text-align: left;
+}
+
+.title > * {
+  vertical-align: middle;
+}
+
+.title > span {
+  padding-left: 5px;
+}
+
+#main-nav > .module {
+  vertical-align: middle;
+  font-family: Inter;
+  font-size: 14pt;
+  font-weight: 200;
+  color: #DEEBF8;
+  text-align: right;
+}
+
+#content {
+  color: #FFFFFF;
+  margin-left: 2vw;
+}
+
+#content > h1 {
+  font-size: 39px;
+  letter-spacing: -0.05em;
+}
+
+#content li { 
+    padding-block: 1.2vh;
+}
+
+#content li::marker {
+    color: #61DAFB;
+    font-size: 1.2rem;
+}
+
+#react-watermark {
+  display: block;
+  right: -154px;
+  top: 20%;
+  position: absolute;
+  height: 268px;
+  filter: saturate(0%) brightness(20%);
+}

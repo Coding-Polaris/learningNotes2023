@@ -1,1 +1,0 @@
-Based on Figma file at https://www.figma.com/file/xA1rJVQOorqMW6xjGdBLcI/ReactFacts
