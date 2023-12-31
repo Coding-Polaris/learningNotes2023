@@ -11,32 +11,35 @@ body {
   justify-content: space-between;
   height: 91px;
   background-color: #21222A;
-}
 
-#main-nav > .title {
-  font-size: 22pt;
-  font-weight: 700;
-  color: #61DAFB;
-  font-family: Inter;
-  letter-spacing: -0.05em;
-  text-align: left;
-}
+  .title {
+    font-size: 22pt;
+    font-weight: 700;
+    color: #61DAFB;
+    font-family: Inter;
+    letter-spacing: -0.05em;
+    text-align: left;
+    * {
+      vertical-align: middle;
+    }
+  }
 
-.title > * {
-  vertical-align: middle;
+  .loadMain, .module {
+    vertical-align: middle;
+    font-family: Inter;
+    font-size: 14pt;
+    font-weight: 200;
+    color: #DEEBF8;
+    text-align: right;
+  }
+
+  .react-logo {
+    height: 40px;
+  }
 }
 
 .title > span {
   padding-left: 5px;
-}
-
-#main-nav > .module {
-  vertical-align: middle;
-  font-family: Inter;
-  font-size: 14pt;
-  font-weight: 200;
-  color: #DEEBF8;
-  text-align: right;
 }
 
 #content {

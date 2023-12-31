@@ -1,0 +1,48 @@
+.project-grid {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+    .project {
+        margin: 0;
+        height: 500px;
+        justify-content: center;
+        border: 1px solid #111120;
+        border-radius: 1em;
+        overflow: hidden;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .description {
+            flex: 0 0 30%;
+            background-color: #21222A;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-stroke: 1px black;
+            padding: 3% 0 3% 0;
+
+            h1 {
+                margin: 3%;
+                font-size: 16pt;
+                font-weight: bold;
+            }
+
+            div {
+                font-size: 10pt;
+                margin: 0 10% 0 10%;
+                text-align: center;
+            }
+        }
+
+        img.preview {
+            flex: 1 1 70%;
+            object-fit: cover;
+            background-color: darkblue;
+        }
+    }
+}

@@ -11,3 +11,4 @@ Equips student to create static page with a few components and styling
 Module covers basic React components/JSX, basic Vite, and recaps CSS
 Final version of page is in ./demoSite/src/components/factsPage
 Final project is a digital business card, in ./demoSite/src/components/businessCard
+Run server with npm run dev (requires node, might be Dockerized later)

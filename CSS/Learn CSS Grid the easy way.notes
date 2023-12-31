@@ -1,0 +1,131 @@
+Based on Learn CSS Grid the easy way by Kevin Powell
+https://www.youtube.com/watch?v=rg7Fvvl3taU
+Uploaded Nov 25, 2021
+
+1. Grid vs flexbox: Grid can be easier than flexbox?
+
+2. Video simplifies and tries to cover grid
+
+3. Two ways to try to simplify grid
+
+	1. "Natural starting point" - Build a target project starting from grid basics
+
+	2. To scrap the previous: He's being mysterious here so I'll fill this in later
+
+4. Sample project - A small grid of testimonials based on a project by "front-end mentor"
+
+https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqblNPcHVVNDYtZFViRXk4aDhqOXhaUFhlTEwwUXxBQ3Jtc0trSVIxdHN6M0wyMkoxeFJTNU1aYXhlc1pHcHVoMmRaUExIMGxIcFZCMXZ0RTRJcEp4RWdUS0JZQkJVV2NSYjF5U0YyUVcwOW55ZHZPcmxRa1ktZV8xOGtBM3ZOR092MTBHeXdRMjAzaEowamk0c1VnSQ&q=https%3A%2F%2Fgithub.com%2Fkevin-powell%2Flearn-grid-the-easy-way&v=rg7Fvvl3taU
+	1. From what I can see - a 3x2 (columns by rows), where the third entry spans two rows.
+
+	2. Each item in the grid has a small user blurb, header, and testimonial body
+
+	3. Grids start like flexbox where the parent element has `display: grid;`
+	which applies the grid behavior to the child elements
+
+	4. Both grid and flex remove "collapsing margins",
+	which can cause a double-spacing effect with paragraphs in child elements
+
+	5. Use `gap` to create horizontal and vertical spacing, not `margin`
+
+	6. Always inspect your grid with the browser's inspector to see what's happening under the hood
+
+	7. Kevin recommends, when viewing the grid, to split up by units and not by elements
+
+	8. In other words, what I thought was a 3x2 is in fact a 4x2 - two of the testimonials are 2 units wide
+
+	9. `grid-template-columns`: Provide one or many widths. Each width corresponds to each column.
+
+	10. `fr` - Size unit; a `fr`action of the grid. (also usable in flexbox.)
+
+	11. The size corresponds to how many fractions are listed,
+	so `1fr 1fr 1fr` corresponds to a third for each column.
+
+	12. This practice of writing for each column can be unwieldy if you want to change the grid:
+
+		1. Enter the `repeat()` function.
+
+		2. Syntax: repeat(<number of times>, <what size>). So: `repeat(3, 100px)` == 3 100px columns.
+
+	13. The author opines that elements simply existing means we don't need to explicitly declare rows.
+
+	14. CSS *implicitly* defines rows automatically when columns are defined, rows are not defined,
+	yet additional elements remain after filling the first set of columns.
+
+	15. (in general) author says let CSS handle this unless you need a very, very specific layout
+
+	16. Spanning multiple rows or columns in a single item
+
+		1. Author likes to use utility classes for this, like "grid-col/row-span-2"
+
+		2. The actual CSS property/value: `grid-column: span 2;`
+
+	17. Interesting problem: reading left to right, the third element is actually the fifth element in the Figma file
+
+	18. How to order these properly?
+
+		1. Reader's thoughts: The author is probably right that the intuitive order of
+		elements is the best to avoid having to do this!
+
+		2. Use nth/last/first-child selectors to apply placement in the grid with CSS
+
+		3. Make sure your changes are applying to the correct element by changing an
+		obvious indicator attribute like background-color
+
+		4. Use `grid-column` again to change placement
+
+		5. Providing `grid-column` with only a number places the element at the column with the number provided.
+		Remember that this is one-, not zero-indexed.
+
+		6. `grid-column` is actually a shorthand for `grid-column-start` and `grid-column-end` when used this way.
+
+		7. Author recommends using `grid-column: span #` when just making elements longer
+		since they won't depend on explicit grid locations.
+
+		8. Generally: start simple, only add complexity if necessary.
+
+		9. Make grid, set size and spacing, set item sizes. Set things like custom order last.
+
+		10. Applying `grid-column-start: 4` *and* `grid-row-start: 1` to the `last-child` makes it appear third!
+
+		11. This works since CSS will look for what's explicitly placed, then do implicit ordering.
+
+		12. So the fifth element is now in column 4
+
+		13. This forces the third element into the next row since now we're out of columns in the first
+		row (columns 1 and 2 taken up by first element, 3rd by second element, 4th by fifth element)
+
+		14. This also stretched out the entire grid because the testimonial is so long
+
+		15. Adding a `grid-row: span 2;`,
+			or `grid-row-start: 1;` and `grid-row-end: 3` (3's the end of the grid),
+			or a `grid-row: 1 / 3;` (yes, that's the right syntax)
+			or even `grid-row: 1 / span 2` can all solve this problem.
+
+		16. Be mindful of utility classes you create to do this clashing with
+		explicit size/placement declarations.
+
+		17. Recap:
+
+			1. Declare `display: grid` in container element
+
+			2. Set up `gap: <size>` in the same
+
+			3. Set column size with `grid-template-columns: repeat(how many, how large)`
+
+			4. Set column spans.
+
+			5. Do specifics and row-spans last.
+
+	19. "Media queries"
+
+		1. He does an aside about how you can remove even explicit column sizing, but you lose a lot of the grid's
+		neatness and organization
+
+		2. `@media (min-width: <size>) {}`: Moving all your grid item declarations in here will only apply
+		them past a certain viewport size. This makes the grid responsive!
+
+		3. Now on a phone we have a vertical list instead of the variably sized grid on PC.
+
+		4. Obviously, the grid declaration and spacing on the parent element are not put into the @media query.
+
+		

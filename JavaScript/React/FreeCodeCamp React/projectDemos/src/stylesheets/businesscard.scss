@@ -1,0 +1,114 @@
+.business-card-container {
+    display: grid;
+    font-size: 10pt;
+    margin: 30px;
+
+    > img {
+        width: 300px;
+    }
+
+    .business-card {
+        width: 317px;
+
+        background-color: #1A1B21;
+        color: white;
+
+        border-radius: 15px;
+        box-shadow: 0 4px 4px 0 #000000;
+
+        overflow: hidden;
+
+        * {
+            margin: 0;
+        }
+
+        .basic-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            h1 {
+                margin: 3px;
+                font-weight: bold;
+                font-size: 18pt;
+            }
+
+            h2 {
+                font-size: 10pt;
+                font-weight: 400;
+                color: #F3BF99;
+            }
+
+            a {
+                margin: 10px;
+
+                color: white;
+                font-size: 8pt;
+                text-decoration: none;
+            }
+        }
+
+        .large-contact-buttons {
+            margin: 10px 25px 10px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            a {
+                text-decoration: none;
+            }
+
+            .large-button {
+                width: 115px;
+                height: 34px;
+
+                border-radius: 5px;
+                border-color: #D1D5DB;
+
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+
+                &.email {
+                    background-color: white;
+                    color: black;
+                }
+
+                &.linkedin {
+                    background-color: #5093E2;
+                    color: white;
+                }
+
+                img {
+                    margin-right: -30px;
+                }
+            }
+        }
+
+        .detail-info-container {
+            margin: 30px 30px 40px 30px;
+
+            h1 {
+                margin-bottom: 5px;
+                font-size: 12pt;
+                font-weight: 700;
+            }
+
+            div {
+                margin-bottom: 15px;
+                line-height: 20px;
+                font-size: 8pt;
+            }
+        }
+
+        .social-link-belt {
+            height: 64px;
+            background-color: #161619;
+            padding: 0 60px 0 60px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+    }
+}
