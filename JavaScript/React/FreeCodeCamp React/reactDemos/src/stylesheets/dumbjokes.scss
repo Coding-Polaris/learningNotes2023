@@ -1,0 +1,56 @@
+.jokes-container {
+    margin: 5%;
+
+    color: white;
+
+    .indent {
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+
+    .blurred {
+        filter: blur(10px);
+    }
+
+    .animates {
+        transition: filter .3s ease-out;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .joke {
+        margin-top: 3%;
+
+        .punchline-wrapper {
+            margin-top: 1%;
+            box-sizing: border-box;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+
+            h2 {
+                font-style: italic;
+            }
+
+            p {
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+
+                user-select: none;
+
+                color: white;
+                text-shadow: -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000, 1px 1px 1px #000;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    .disclaimer {
+        font-style: italic;
+        margin-top: 3%;
+    }
+}

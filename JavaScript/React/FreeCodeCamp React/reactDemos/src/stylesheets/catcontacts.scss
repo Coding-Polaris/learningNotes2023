@@ -1,0 +1,56 @@
+div.cat-contact-container {
+    width: 100%;
+
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: repeat(2, 20rem);
+
+    padding: 2rem;
+
+    .contact-card {
+        box-sizing: border-box;
+        padding: 1rem;
+
+        border-radius: .75rem;
+        border: 1px solid darkgrey;
+        background-color: white;
+        box-shadow: .1rem .2rem .3rem 0 grey;
+
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+
+        .phone-icon {
+            filter: blur(.4px);
+        }
+
+        .contact-info-area {
+            > p:nth-child(1) {
+                margin: 8px 0 0 0;
+            }
+        }
+
+        > img {
+            max-height: 60%;
+            object-fit: cover;
+            border-radius: .5em;
+        }
+
+        h3 {
+            font-weight: 700;
+            font-size: 2em;
+            margin: .5em 0 .5em 0;
+        }
+    }
+
+}
+
+.one-line-flex {
+    display: flex;
+    gap: .4rem;
+}
+
+.small-icon {
+    width: 1rem;
+    object-fit: cover;
+}
