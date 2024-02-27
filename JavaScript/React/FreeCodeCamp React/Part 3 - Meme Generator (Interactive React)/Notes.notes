@@ -1,0 +1,465 @@
+1. Starting with the static components of the section project
+
+2. I'm going to go ahead and take a stab at this without watching the 2 recap sections at the start of this module
+
+3. Holy cow, what a dive that was.
+
+    1. Linear gradient basics.
+
+    2. More flex practice.
+
+    3. Transforms: scale and translate
+
+    4. Interplay and limitations of image sizing in wrappers (restrict one way, it'll overflow another)
+
+    5. Text stroke
+
+        1. Shadow simulation
+
+        2. paint-order
+
+    6. Free-floated centering (absolute, left: 50%, transform: translate...)
+
+4. What could I have done better, going through the lesson?
+
+    1. Use grid for the button and text inputs
+
+        1. He writes: grid-template 40px 40px / 1fr 1fr;
+
+        2. Two rows of 40px. Slash means "now do columns"
+
+        3. Two columns with 1 fraction of the allotted space, automatically minding margins etc.
+
+        4. `grid-column: 1 / -1;` means start content at the left of the first column (1) and go to right of last column (-1)
+
+    2. Can use `text-indent: <pixels>;` to move input text rather than `padding`
+
+    3. Just style a button instead of wrapping a <div> in an <a>, and give it `cursor: pointer;`
+
+    4. Use labels for accessibility
+
+5. Lesson: Project Analysis
+
+    1. Our project is interactive, so we'll need event listeners
+
+        1. thingies that update themselves with user input or other changes
+
+    2. The app is intended to load in images from imgflip
+
+6. Lesson: Event Handlers
+
+    1. Recall your vanilla JS:
+
+        1. addEventListener("onclick", function...)
+
+        2. or put onclick in HTML and reference a function
+
+    2. How we attach a console to log to a button:
+
+        1. Add "onClick=" (case sensitive) to the element
+
+        2. You can use the other usual set of events here (onMouseOver, onMouseEnter)
+
+        3. Remember to NOT call the function when adding the handler (using ()).
+
+            1. if you do, it will execute at run time instead of storing the function for execution
+            when the event fires
+
+7. Project: Get random meme
+
+    1. Hit an API of the 100 most popular meme images
+
+    2. We'll start with prefab data instead of calling the api.
+
+    3. Challenge: Randomly choose a meme image from the JSON
+
+        1. I set an onclick to the name of a function I'll write
+
+        2. The function creates a random number equal to:
+
+            floor(memeArray.length * Math.random())
+
+        3. I then just find the element at that random index within the array
+
+        4. And get/return the url
+
+    4. React State
+
+        1. You can't declare component-level variables,
+
+            1. Change them in a function in the component's scope,
+
+                1. And then use those variables in the JSX:
+
+                let url
+
+                function doSomething(url) {
+                    return(somethingDoneToURL)
+                }
+
+                return (<p>{doSomething(url)}</p>) // doesn't change the url
+
+    5. An exercise where I need to update an array with a button click works,
+    but can't be used to update an array of JSX objects such that it simply
+    renders on the page.
+
+    6. Reminder that React is declarative:
+
+        1. Instead of telling JavaScript "put this new element on the page"
+
+        2. We say "change every place this data appears when the data is changed"
+
+        3. This second part is done for us by React. We don't have to go in and
+        manually update elements when using React State.
+
+8. Props vs State
+
+    1. When to use props. This seems to be more of a when not to use.
+
+        1. Props are immutable. We won't be changing them, so don't pass in stuff you need to change.
+
+        2. Props, passed in through JSX properties, become arguments of the component logic.
+
+            1. They are passed in "from above", and should not change nor pass values "back up"
+            the stack.
+
+        3. In summary - Change the props on the top level, where they're passed in,
+        but don't change them within the body of a function belonging to a React Component.
+
+    2. How about state?
+
+        1. These are values defined inside a component, and are intended to be data that changes;
+        state is data "managed" by a component
+
+        2. When a component has changing values, you'll probably be using state.
+
+        3. Bob drops a challenge here:
+
+            Challenge: complete the function below
+            Given a name, return "Good <timeOfDay>, <name>!" depending
+            on the current time of day.
+
+            4 am - 11:59 am, timeOfDay = "morning"
+            12 pm - 4:59 pm: timeOfDay = "afternoon"
+            5 pm - 7:59 pm: timeOfDay = "evening"
+            8 pm - 3:59 am: timeOfDay = "night"
+
+            E.g. if it's currently 1 pm, greeting("Jane") ==> "Good afternoon, Jane!"
+
+            Hint: you can get the current time of day by using: 
+
+            const date = new Date()
+            const hours = date.getHours()
+
+            function greeting(name) {
+                let timeOfDay
+                if(hours >= 4 && hours < 12) {
+                    timeOfDay = "morning"
+                } else if(hours >= 12 && hours < 17) {
+                    timeOfDay = "afternoon"
+                } else if(hours >= 17 && hours < 20) {
+                    timeOfDay = "evening"
+                } else {
+                    timeOfDay = "night"
+                }
+                console.log(`Good ${timeOfDay}, ${name}!`)
+            }
+
+9. Quiz: Props vs state
+
+    1. How would you describe the concept of "state"?
+
+        Changeable data belonging to React components
+
+    2. When would you want to use props instead of state?
+
+        When you're setting unchanging attributes that define a component
+
+    3. When would you want to use state instead of props?
+
+        State is used when things will change. Props are used when defining something, and when this definition isn't intended to change.
+
+    4. What does "immutable" mean? Are props immutable? Is state immutable?
+
+        Immutable means unchangeable. Props are immutable; state is not.
+
+    5. How did I do?
+
+        1. Bob describes state as "the way things *currently are*".
+
+            1. In React this is "values maintained between component render cycles"
+
+            2. Basically variables remembered within components, with a few other interesting properties
+
+        2. / 3. Think of JS functions:
+
+            1. Props are like arguments. You don't typically mute these.
+
+            2. State is like a variable scoped within the function.
+
+            3. Usually props are used to determine display parameters for the component.
+
+        4. Ye
+
+10. useState
+
+    1. Remember that you can't create regular persistent variables in a component.
+
+    2. Enter useState:
+
+        1. write `React.useState()`,
+
+            1. or destructure/declare useState at the start of your file with `import React, {useState} from "react"`
+
+            2. What does it do? What does it return? An array with undefined and a function.
+
+            3. The first argument is the input to `useState(input)`
+
+        2. Challenge: Change a hard-coded piece of text on the page to a value passed to useState
+
+            1. In the example, a variable `result` is set to the return value of `useState`
+
+            2. So I simply replace the "Yes" text with "{result[0]}"
+
+11. useState array destructuring
+
+    1. The first arg of useState is a #value we want to save.
+
+    2. Accessing the output object from invoking useState with array indices is clunky.
+
+        1. Instead, we'll use destructuring:
+
+            import React from "react"
+
+            export default function App() {
+                // look here!
+                const [result, func] = React.useState("Yes")
+                console.log(result) // => "Yes"
+                return (
+                    <div className="state">
+                        <h1 className="state--title">Is state important to know?</h1>
+                        <div className="state--value">
+                            <h1>{result[0]}</h1>
+                        </div>
+                    </div>
+                )
+            }
+
+        2. Array destructuring is used for this specific case to avoid forcing variables to be named after the object key.
+
+        3. Naming should be used here to match the purpose of the variable, e.g.
+
+            [stateIsImportant, func] = useState...
+
+12. Changing state
+
+    1. What is the function passed back from useState?
+
+        1. [someStateVariable, func] = useState(newValue)
+
+        2. It's a mutator. Instead of `someStateVariable = newValue`,
+        you now have `func(newValue)` to set the value of `someStateVariable`
+
+        3. Make it expressive: `[someStateVariable, setSomeStateVariable] = ...`
+
+        4. #Mind that it should only be called on events or other non-continuous events.
+
+            1. According to ChatGPT, that's because setState causes components to be re-rendered to reflect changes.
+
+            2. This leads to infinite recursion.
+
+        5. So to recap, setState is an event-triggered state variable mutator.
+        
+            1. It's similar, but shouldn't be thought of as totally equivalent to `someVariable = ...`
+
+        6. Challenge: Take this code and have a click handler change the state value inside of the h1.
+
+            export default function App() {
+                const [isImportant, setIsImportant] = React.useState("Yes")
+                /**
+                 * Challenge: 
+                 * 1. Create a function called `handleClick` that runs
+                 *    setIsImportant("No")
+                 * 2. add a click event listener to the div.state--value
+                 *    that runs `handleClick` when the div is clicked.
+                 */
+                 
+                function handleClick() {
+                    setIsImportant("NO")
+                }
+                
+                return (
+                    <div className="state">
+                        <h1 className="state--title">Is state important to know?</h1>
+                        <div className="state--value" onClick={handleClick}>
+                            <h1>{isImportant}</h1>
+                        </div>
+                    </div>
+                )
+            }
+
+13. useState - Counter practice
+
+    1. There's a counter div and a plus and minus button.
+
+    2. Seems pretty obvious I just need to have them increment and decrement some state variable with a setState function.
+
+    3. I remember that we don't use function invocations() inside of onClicks.
+
+    4. Instead, I put an anonymous function () => setCount(count +- plusOrMinus)
+
+    5. It works!
+
+    6. https://scrimba.com/learn/learnreact/usestate-counter-practice-co1f54adba032538022373b97
+
+    7. Note: It probably goes without saying, but don't put state-changing functions in the outer scope of your component files.
+
+        1. Keep that code inside the component's scope/block.
+
+    8. Note: Do NOT use setter shorthands like count++ or count-- when updating state.
+
+    9. In general, always use setState, or React will not be aware of changes to the variable, and you get unexpected behavior.
+
+    10. Note: Apparently, repeating the state variable within setState is not considered good practice. Covered in next lesson.
+
+14. useState - Changing state with a callback function
+
+    1. While the previous approach I used worked,
+
+        1. It is typically considered more idiomatic to use a function in setCount to reference the old value:
+
+            function add() {
+                setCount(function(oldValue) {
+                    return(oldValue + 1)    
+                })
+            }
+
+        2. To make this slightly less cringe, refactor thusly:
+
+            function add() { setCount(oldCount => oldCount + 1)}
+
+15. Quiz: State changes
+
+    1. You have 2 options for what you can pass in to a
+       state setter function (e.g. `setCount`). What are they?
+       
+        1. The new value to set the state variable to
+
+        2. A function that sets the state variable indirectly to its return value, which is based on any logic inside the function
+
+    2. When would you want to pass the first option (from answer
+       above) to the state setter function?
+
+        If you don't need dynamic data changes
+
+    3. When would you want to pass the second option (from answer
+       above) to the state setter function?
+
+        When you do need dynamic changes
+
+16. Meme generator: Change images
+
+    1. Challenge: Now that we know state, use it to update the image from a random list of images when the "get new image" is pressed.
+
+    2. Done:
+
+        let [memeImage, changeMemeImage] = useState(defaultImg)
+
+    3. I also attempted to make text changeable, but I think there are some things I still need to learn before that
+
+17. Challenge: Ternary practice
+
+    1. Have used these a billion times. Done phase 1, won't take notes here.
+
+    2. Phase 2 is literally just removing a variable declaration and pasting what it used to be in JSX braces
+
+18. Challenge: Flipping state back and forth
+
+    1. Pretty simple:
+
+        1. Declare boolean with a default value as a state variable:
+
+            let [isGoingOut, changeIsGoingOut] = useState(false)
+
+        2. Declare a function that invokes changeIsGoingOut to use a ternary operator to flip isGoingOut:
+
+            const flipGoingOut = function() { changeIsGoingOut(oldIsGoingOut => oldIsGoingOut ? false : true)}
+
+        3. Put an onClick event handler to invoke `flipGoingOut` when clicked
+
+        4. In the text element, interpolate text value to be "Yes" in the true ternary case for isGoingOut and "No" if it's false
+
+        5. It works!
+
+    2. Notes based on instructor walkthrough:
+
+        1. setVariable (if you were to name the variable "variable") is the conventional naming for a state variable setter in `useState`
+
+        2. I was right about using anonymous (callback) arrow functions in JSX braces
+
+        3. Well... in the sense that it's something you CAN do. Often better to abstract out into full named function
+
+        4. Remember that a single bang operator ("!") can be easier than ternary in some places ;)
+
+19. Accessibility Check - replace div with button
+
+    1. Opens with a question - what's wrong with a JSX button that's called a div?
+
+    2. Accessibility screen readers can't delineate that a div is necessarily something to be pressed
+
+    3. It should also be obvious when something has a changeable value, and what kind of change it is
+
+    4. Multiple h1s in the original code - bump down the header level if it isn't the whole page's header
+
+20. Complex state: Arrays
+
+    1. Kicking it off with a challenge to use arrays in a state variable to update a list of components
+
+    2. This was pretty straightforward:
+
+        const [thingsArray, setThingsArray] = useState(["Thing 1", "Thing 2"])
+
+    3. What I don't get is why running the state set method doesn't update the array immediately,
+
+        yet the array of elements still updates - is it asynchronous, and doesn't update the var until after re-render?
+
+    4. ChatGPT says that updates of this kind are indeed async.
+
+    5. Reminder to always go through useState setters. Don't use any other functionality to try to change state variables.
+
+21. Complex state: Objects/Updating state objects
+
+    1. You can reference and return objects in the setter.
+
+    2. When you return new objects in the setter, and you want to maintain old values,
+
+        1. Be sure to use the spread operator `...` to retrieve those values,
+
+        2. AND put the new values in the object AFTER `...oldstate`
+
+            function toggleFavorite() {
+                setContact(function(oldContact) { // invoke setter to use old contact info
+                    return({ // set state to use a new object...
+                        ...oldContact, // with all the keys and values of the old object...
+                        isFavorite: !oldContact.isFavorite // except for isFavorite, which should be toggled from true to false or vice versa
+                    })
+                })
+            }
+
+22. Project: Refactor state
+
+    1. Bob is asking me to use a single state object to handle the meme generator, rather than three state variables.
+
+    2. Done, remembering the requirements of the previous section.
+
+23. Passing state as props
+
+    1. State is passed down as a prop to a component. What happens?
+
+    2. The code I modified works, but what's new?
+
+    3. Bob puts a couple of console logs in each component, the outer app and inner component.
+
+    4. The bottom line: #When state is changed, any components that receive the state are re-rendered along with parents.
+
+    

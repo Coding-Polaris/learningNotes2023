@@ -1,0 +1,103 @@
+#travel-journal-wrapper {
+    box-sizing: border-box;
+    width: 40%;
+    margin: auto;
+
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    #travel-nav {
+        width: 100%;
+        height: 55px;
+
+        background-color: #a53e3e;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            height: 24px;
+            object-fit: cover;
+        }
+
+        span {
+            margin-left: 6px;
+        }
+    }
+
+    #travel-place-list {
+        box-sizing: border-box;
+        padding: 55px 45px 55px 45px;
+        width: 100%;
+
+        background-color: #00002A;
+
+        .travel-destination {
+            display: flex;
+            align-items: stretch;
+            gap: 25px;
+
+            .place-photo-container {
+                border-radius: 5px;
+
+                width: 180px;
+                height: 230px;
+
+                overflow: hidden;
+                
+                img.place-photo {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+        
+
+            .destination-info-container {
+                box-sizing: border-box;
+
+                font-size: 12px;
+
+                flex: 1;
+                align-self: center; 
+
+                a {
+                    text-decoration: none;
+                    color: white;
+                }
+                
+                h1 {
+                    margin: 8px 0 15px 0;
+
+                    font-size: 25px;
+                    font-weight: 700;
+                }
+
+                .description {
+                    margin-top: 20px;
+
+                    font-size: 12px;
+                }
+
+                .location {
+                    letter-spacing: 3px;
+                    font-size: 12px;
+
+                    display: flex;
+                    gap: 6px;
+                    img {
+                        width: 10px;
+                    }
+                }
+            }
+        }
+
+        hr {
+            margin: 20px 0 20px 0;
+        }
+    }
+}

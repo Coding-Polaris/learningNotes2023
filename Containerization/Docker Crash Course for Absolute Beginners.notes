@@ -41,7 +41,7 @@ Shell Commands:
 
 Dockerfile Commands:
 
-    `FROM <image>:<version>` - Retrieve a base image, usually from DockerHub
+    `FROM <image>:<version>` - Retrieve a base image, usually from DockerHub. Can put "latest" for version
 
     `COPY <source directory> <destination directory *inside container*>` - Copy file from local Dockerfile dir to image file
 
@@ -59,7 +59,7 @@ Dockerfile Commands:
 
     - Does this by packaging dependencies, config, system tools, versions/runtime together
 
-    - This packaging of required supporting software/config, everything the app needs to run, is known as a container
+    - This packaging of required supporting software/config, everything the app needs to run, is known as an image
 
     - This makes the app easy to share and distribute
 

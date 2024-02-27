@@ -17,6 +17,24 @@ Part 1:
 Part 2:
 
 	Recap of previous section CSS + Static components
-		I personally used this to practice CSS Grid and dynamic image loading
-	Dynamically loaded content
+		At this point I'm pretty strong with static components
+		So I used this to learn a bunch of CSS:
+			- Practice flex + grid
+			- Other stuff: object-fit, align-self,
+			- Setting proper margins, sizes, fit, and positioning
+			- Basic animations and filters
+	Dynamically loaded content using props
 	Creating components w/ that dynamic content from arrays
+
+Part 3:
+
+	Interactivity with React
+	It's time to make Dynamic Web Apps
+	Read/write and display data
+
+	Concepts:
+		- Event listeners (jQuery?)
+		- State
+		- Conditional rendering
+		- Forms
+		- Side effects

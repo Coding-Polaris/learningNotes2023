@@ -510,4 +510,40 @@
 
         3. And therefore being better for maintenance
 
-    
+22. Solo Project: Travel Journal Dev Process
+
+    1. I decomposed the Figma file into sections and attacked them from the outside in:
+
+        1. A navbar. 100% width, a centered flex logo and image with explicit dimension(s) and `object-fit: cover;`
+        Pretty straightforward
+
+        2. The actual journal section
+
+            1. Entries make an ideal stand-alone component, so I'll use .map() on a data structure
+            to render them within a container component
+
+            2. Of course, each entry from the data structure is passed to the component as a `prop`
+
+                1. Dev/Troubleshoot the Destination component:
+
+                    1. I had to put the travel images in wrappers of definite size to ensure that they take up the allotted space.
+
+                    2. Using `object-fit: cover;` ensured that aspect ratios weren't skewed.
+
+                    3. Text kept rendering below my image, so I stuffed all the text into another wrapper element.
+                    Then I made the wrappers' wrapper - the Destination component itself - a horizontal flex.
+
+                    4. Instead of making a separate Google maps link, I made the destination marker a link.
+                    Learned how to make Google maps links from latitude/longitude.
+
+                    5. The text section wrapper:
+
+                        1. I started with margins, which looked sloppy.
+                        Needed `align-self: center;` for consistent vertical centering with respect to the photo.
+
+                        2. Different gaps and styles. Notably, using flex yet again in the link/map marker tiny text section,
+                        as well as letter-spacing for the cool w i d e effect
+
+                2. Then just inserting <hr> elements between each entry during the iterations of .map().
+
+        3. Cool project, just enough hiccups to keep me learning things.
